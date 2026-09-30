@@ -1,0 +1,375 @@
+---
+import ConversationCard from './ConversationCard.astro';
+import { cardDescription, type Conversation } from '../lib/content';
+
+interface Props {
+  conversations: Conversation[];
+  themes: { name: string; slug: string; conversationCount: number }[];
+  guests: { id: string; name: string }[];
+}
+
+const { conversations, themes, guests } = Astro.props;
+
+/** Client-side search index. Mirrors the spec: title, guest, description, topics, themes. */
+const index = conversations.map((c) => ({
+  id: c.id,
+  title: c.title,
+  guest: c.guest.name ?? '',
+  description: cardDescription(c),
+  topics: c.topics,
+  themes: c.themes,
+}));
+---
+
+<div class="explorer" data-explorer>
+  <form class="explorer__controls" role="search" aria-label="Search and filter conversations" data-controls>
+    <div class="field field--search">
+      <label class="field__label" for="conversation-search">Search conversations</label>
+      <input
+        class="field__input"
+        id="conversation-search"
+        name="q"
+        type="search"
+        autocomplete="off"
+        placeholder="A name, a subject, a feeling"
+        data-search
+      />
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="conversation-theme">Theme</label>
+      <select class="field__input" id="conversation-theme" name="theme" data-theme>
+        <option value="">All themes</option>
+        {
+          themes.map((t) => (
+            <option value={t.name}>{t.name} ({t.conversationCount})</option>
+          ))
+        }
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="conversation-guest">Person</label>
+      <select class="field__input" id="conversation-guest" name="guest" data-guest>
+        <option value="">Everyone</option>
+        {guests.map((g) => <option value={g.id}>{g.name}</option>)}
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="conversation-sort">Sort</label>
+      <select class="field__input" id="conversation-sort" name="sort" data-sort>
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+      </select>
+    </div>
+
+    <div class="field field--action">
+      <button class="btn btn-secondary" type="button" data-reset>Clear</button>
+      <noscript><button class="btn" type="submit">Apply</button></noscript>
+    </div>
+  </form>
+
+  <p class="explorer__status" role="status" aria-live="polite" data-status>
+    Showing all {conversations.length} conversations.
+  </p>
+
+  <h2 class="visually-hidden">Conversations</h2>
+
+  <ul class="explorer__grid" data-results>
+    {
+      conversations.map((c, i) => (
+        <li
+          class="explorer__item"
+          data-id={c.id}
+          data-date={c.publicationDate}
+          data-published={c.publishedAt ?? ''}
+          data-guest={c.guest.id ?? ''}
+          data-themes={c.themes.join('|')}
+        >
+          <ConversationCard conversation={c} eager={i < 3} />
+        </li>
+      ))
+    }
+  </ul>
+
+  <!--
+    Only the newest episodes show at first; More Episodes reveals the rest of the archive in
+    batches, still newest to oldest. Without JavaScript every episode is simply listed, so
+    the button stays hidden until the script takes over.
+  -->
+  <div class="explorer__more" hidden data-more-wrap>
+    <button class="btn btn-secondary" type="button" data-more>More Episodes</button>
+  </div>
+
+  <p class="explorer__empty" hidden data-empty>
+    No conversations match that yet. Try a different word, or clear the filters to see everything.
+  </p>
+
+  <script type="application/json" is:inline data-index set:html={JSON.stringify(index)} />
+</div>
+
+<style>
+  .explorer__controls {
+    display: grid;
+    gap: var(--space-s);
+    padding: var(--space-m);
+    background: var(--surface-quiet);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    margin-bottom: var(--space-m);
+  }
+
+  .field {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .field__label {
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+
+  .field__input {
+    min-height: 48px;
+    padding: 0.6rem 0.75rem;
+    font: inherit;
+    font-size: var(--step-0);
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+  }
+
+  .field--action {
+    align-self: end;
+    display: flex;
+    gap: var(--space-xs);
+  }
+
+  .explorer__status {
+    font-size: var(--step--1);
+    color: var(--ink-quiet);
+    margin: 0 0 var(--space-m);
+  }
+
+  .explorer__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  .explorer__item {
+    max-width: none;
+  }
+
+  .explorer__more {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-l);
+  }
+
+  .explorer__more[hidden] {
+    display: none;
+  }
+
+  .explorer__more .btn {
+    min-width: min(100%, 16rem);
+    justify-content: center;
+  }
+
+  .explorer__empty {
+    padding: var(--space-l) 0;
+    color: var(--ink-soft);
+    font-family: var(--font-editorial);
+    font-size: var(--step-1);
+  }
+
+  @media (min-width: 40rem) {
+    .explorer__controls {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .field--search {
+      grid-column: 1 / -1;
+    }
+
+    .explorer__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 62rem) {
+    .explorer__controls {
+      grid-template-columns: 2fr 1fr 1fr 1fr auto;
+    }
+
+    .field--search {
+      grid-column: auto;
+    }
+
+    .explorer__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>
+
+<script>
+  import Fuse from 'fuse.js';
+
+  type IndexRecord = {
+    id: string;
+    title: string;
+    guest: string;
+    description: string;
+    topics: string[];
+    themes: string[];
+  };
+
+  const root = document.querySelector<HTMLElement>('[data-explorer]');
+  if (root) {
+    const form = root.querySelector<HTMLFormElement>('[data-controls]')!;
+    const searchInput = root.querySelector<HTMLInputElement>('[data-search]')!;
+    const themeSelect = root.querySelector<HTMLSelectElement>('[data-theme]')!;
+    const guestSelect = root.querySelector<HTMLSelectElement>('[data-guest]')!;
+    const sortSelect = root.querySelector<HTMLSelectElement>('[data-sort]')!;
+    const resetButton = root.querySelector<HTMLButtonElement>('[data-reset]')!;
+    const status = root.querySelector<HTMLElement>('[data-status]')!;
+    const list = root.querySelector<HTMLUListElement>('[data-results]')!;
+    const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+    const indexEl = root.querySelector<HTMLScriptElement>('[data-index]')!;
+    const moreWrap = root.querySelector<HTMLElement>('[data-more-wrap]')!;
+    const moreButton = root.querySelector<HTMLButtonElement>('[data-more]')!;
+
+    /** How many episodes show at first, and how many each More Episodes press adds. */
+    const PAGE_SIZE = 12;
+    let limit = PAGE_SIZE;
+
+    const records: IndexRecord[] = JSON.parse(indexEl.textContent || '[]');
+    const items = Array.from(list.querySelectorAll<HTMLLIElement>('.explorer__item'));
+    const total = items.length;
+
+    const fuse = new Fuse(records, {
+      includeScore: true,
+      threshold: 0.38,
+      ignoreLocation: true,
+      minMatchCharLength: 2,
+      keys: [
+        { name: 'title', weight: 3 },
+        { name: 'guest', weight: 3 },
+        { name: 'themes', weight: 2 },
+        { name: 'topics', weight: 2 },
+        { name: 'description', weight: 1 },
+      ],
+    });
+
+    form.addEventListener('submit', (event) => event.preventDefault());
+
+    const readUrl = () => {
+      const params = new URLSearchParams(window.location.search);
+      searchInput.value = params.get('q') ?? '';
+      themeSelect.value = params.get('theme') ?? '';
+      guestSelect.value = params.get('guest') ?? '';
+      sortSelect.value = params.get('sort') === 'oldest' ? 'oldest' : 'newest';
+    };
+
+    const writeUrl = () => {
+      const params = new URLSearchParams();
+      if (searchInput.value.trim()) params.set('q', searchInput.value.trim());
+      if (themeSelect.value) params.set('theme', themeSelect.value);
+      if (guestSelect.value) params.set('guest', guestSelect.value);
+      if (sortSelect.value === 'oldest') params.set('sort', 'oldest');
+      const query = params.toString();
+      const next = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+      window.history.replaceState({}, '', next);
+    };
+
+    const apply = ({ keepLimit = false } = {}) => {
+      // A new search, filter or sort starts again from the first batch.
+      if (!keepLimit) limit = PAGE_SIZE;
+      const query = searchInput.value.trim();
+      const theme = themeSelect.value;
+      const guest = guestSelect.value;
+      const oldestFirst = sortSelect.value === 'oldest';
+
+      // Search first, filters second — they compose.
+      let allowed: Set<string> | null = null;
+      let order: string[] | null = null;
+
+      if (query.length >= 2) {
+        const hits = fuse.search(query);
+        allowed = new Set(hits.map((h) => h.item.id));
+        order = hits.map((h) => h.item.id);
+      }
+
+      const visible = items.filter((item) => {
+        const id = item.dataset.id!;
+        if (allowed && !allowed.has(id)) return false;
+        if (guest && item.dataset.guest !== guest) return false;
+        if (theme && !(item.dataset.themes || '').split('|').includes(theme)) return false;
+        return true;
+      });
+
+      const visibleIds = new Set(visible.map((i) => i.dataset.id!));
+
+      const sorted = [...visible].sort((a, b) => {
+        // A relevance ranking wins while a search term is active.
+        if (order) return order.indexOf(a.dataset.id!) - order.indexOf(b.dataset.id!);
+        const compare =
+          a.dataset.date!.localeCompare(b.dataset.date!) ||
+          (a.dataset.published || '').localeCompare(b.dataset.published || '');
+        return oldestFirst ? compare : -compare;
+      });
+
+      const shownIds = new Set(sorted.slice(0, limit).map((i) => i.dataset.id!));
+      for (const item of items) item.hidden = !shownIds.has(item.dataset.id!);
+      for (const item of sorted) list.append(item);
+      for (const item of items) if (!visibleIds.has(item.dataset.id!)) list.append(item);
+
+      const shown = Math.min(limit, visible.length);
+      moreWrap.hidden = visible.length <= limit;
+      empty.hidden = visible.length > 0;
+      const filtered = Boolean(query || theme || guest);
+      status.textContent =
+        shown < visible.length
+          ? `Showing ${shown} of ${visible.length} ${filtered ? 'matching ' : ''}conversations.`
+          : filtered
+            ? `Showing ${visible.length} of ${total} conversations.`
+            : `Showing all ${total} conversations.`;
+
+      writeUrl();
+    };
+
+    let debounce: number;
+    searchInput.addEventListener('input', () => {
+      window.clearTimeout(debounce);
+      debounce = window.setTimeout(apply, 140);
+    });
+    themeSelect.addEventListener('change', () => apply());
+    guestSelect.addEventListener('change', () => apply());
+    sortSelect.addEventListener('change', () => apply());
+    moreButton.addEventListener('click', () => {
+      const before = list.querySelectorAll('.explorer__item:not([hidden])').length;
+      limit += PAGE_SIZE;
+      apply({ keepLimit: true });
+      // Keyboard and screen-reader users continue from the first newly revealed episode.
+      const next = list.querySelectorAll<HTMLElement>('.explorer__item:not([hidden])')[before];
+      next?.querySelector<HTMLAnchorElement>('.card__title a')?.focus();
+    });
+
+    resetButton.addEventListener('click', () => {
+      form.reset();
+      searchInput.value = '';
+      apply();
+      searchInput.focus();
+    });
+
+    readUrl();
+    apply();
+  }
+</script>

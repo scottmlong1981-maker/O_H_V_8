@@ -1,0 +1,414 @@
+/*
+  Our Healing Voices — global design tokens.
+  Colors are taken verbatim from 01_Brand_Kit.pdf, Section 06 "Technical Tokens".
+  No colors outside this system may be introduced.
+*/
+
+:root {
+  /* Observed greens */
+  --ohv-field: #24622f;
+  --ohv-hedge: #225c2b;
+  --ohv-leaf: #306f31;
+  --ohv-shadow: #133e24;
+
+  /* Observed neutrals */
+  --ohv-bench: #cdcac9;
+  --ohv-bench-shadow: #acafa7;
+  --ohv-soft-white: #f3f6f3;
+  --ohv-podcast-mist: #e6f1e8;
+
+  /* Applied roles */
+  --surface: var(--ohv-soft-white);
+  --surface-quiet: #ffffff;
+  --surface-deep: var(--ohv-hedge);
+  --surface-deepest: var(--ohv-shadow);
+  --surface-mist: var(--ohv-podcast-mist);
+
+  --ink: #1b2a1e;
+  --ink-soft: #48544a;
+  --ink-quiet: #5d6a5e;
+  --ink-inverse: var(--ohv-soft-white);
+  --ink-inverse-soft: #d7e4d9;
+
+  --rule: #d8ded8;
+  --rule-strong: var(--ohv-bench-shadow);
+  --rule-inverse: rgba(243, 246, 243, 0.28);
+
+  --accent: var(--ohv-field);
+  --accent-deep: var(--ohv-shadow);
+  --focus: var(--ohv-shadow);
+
+  /* Type */
+  --font-display: 'Jost', 'Avenir Next', 'Century Gothic', 'Segoe UI', system-ui, sans-serif;
+  --font-editorial: 'Cormorant Garamond', 'Iowan Old Style', 'Palatino Linotype', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  --step--1: clamp(0.83rem, 0.8rem + 0.15vw, 0.9rem);
+  --step-0: clamp(1rem, 0.97rem + 0.18vw, 1.075rem);
+  --step-1: clamp(1.2rem, 1.12rem + 0.4vw, 1.4rem);
+  --step-2: clamp(1.45rem, 1.3rem + 0.75vw, 1.85rem);
+  --step-3: clamp(1.8rem, 1.5rem + 1.4vw, 2.6rem);
+  --step-4: clamp(2.2rem, 1.7rem + 2.4vw, 3.6rem);
+
+  /* Space + measure */
+  --space-2xs: 0.35rem;
+  --space-xs: 0.6rem;
+  --space-s: 1rem;
+  --space-m: 1.6rem;
+  --space-l: 2.6rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+
+  --measure: 66ch;
+  --shell: 74rem;
+  --shell-narrow: 56rem;
+
+  /* The brand is quiet: almost no radius, no shadow, no gradients. */
+  --radius: 2px;
+}
+
+/* Reset-ish */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+video,
+iframe {
+  max-width: 100%;
+  display: block;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0 0 var(--space-s);
+  line-height: 1.15;
+  font-weight: 400;
+  text-wrap: balance;
+}
+
+h1 {
+  font-family: var(--font-editorial);
+  font-size: var(--step-4);
+}
+
+h2 {
+  font-family: var(--font-editorial);
+  font-size: var(--step-3);
+}
+
+h3 {
+  font-family: var(--font-editorial);
+  font-size: var(--step-2);
+}
+
+h4 {
+  font-family: var(--font-body);
+  font-size: var(--step-1);
+  font-weight: 600;
+}
+
+p,
+li {
+  max-width: var(--measure);
+}
+
+p {
+  margin: 0 0 var(--space-s);
+}
+
+a {
+  color: var(--accent);
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+
+a:hover {
+  color: var(--accent-deep);
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.on-dark :focus-visible,
+.footer :focus-visible {
+  outline-color: var(--ohv-soft-white);
+}
+
+/* Layout helpers */
+.shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--space-m);
+}
+
+.shell-narrow {
+  max-width: var(--shell-narrow);
+}
+
+.section {
+  padding-block: var(--space-xl);
+}
+
+.section + .section {
+  border-top: 1px solid var(--rule);
+}
+
+.section-dark {
+  background: var(--surface-deep);
+  color: var(--ink-inverse);
+  border-top: none;
+}
+
+.section-dark a {
+  color: var(--ink-inverse);
+}
+
+.section-mist {
+  background: var(--surface-mist);
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--accent);
+  margin: 0 0 var(--space-xs);
+}
+
+.section-dark .eyebrow {
+  color: var(--ink-inverse-soft);
+}
+
+.lede {
+  font-family: var(--font-editorial);
+  font-size: var(--step-1);
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.section-dark .lede {
+  color: var(--ink-inverse-soft);
+}
+
+.meta {
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-quiet);
+  margin: 0;
+}
+
+.section-dark .meta {
+  color: var(--ink-inverse-soft);
+}
+
+/* Buttons — flat, rectangular, legible. No pills, no shadows. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 48px;
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--ohv-soft-white);
+  transition: background-color 120ms linear, color 120ms linear;
+}
+
+.btn:hover {
+  background: var(--accent-deep);
+  border-color: var(--accent-deep);
+  color: var(--ohv-soft-white);
+}
+
+.btn-secondary {
+  background: var(--surface-mist);
+  color: var(--accent-deep);
+  border-color: var(--rule-strong);
+}
+
+.btn-secondary:hover {
+  background: var(--ohv-bench);
+  color: var(--accent-deep);
+  border-color: var(--accent-deep);
+}
+
+.section-dark .btn {
+  background: var(--ohv-soft-white);
+  color: var(--accent-deep);
+  border-color: var(--ohv-soft-white);
+}
+
+.section-dark .btn:hover {
+  background: var(--ohv-podcast-mist);
+  color: var(--accent-deep);
+}
+
+.section-dark .btn-secondary {
+  background: transparent;
+  color: var(--ohv-soft-white);
+  border-color: var(--rule-inverse);
+}
+
+.section-dark .btn-secondary:hover {
+  background: rgba(243, 246, 243, 0.12);
+  color: var(--ohv-soft-white);
+  border-color: var(--ohv-soft-white);
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space-m);
+}
+
+.link-quiet {
+  font-family: var(--font-body);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+}
+
+/* Tag lists — plain text chips with a hairline, not pills */
+.tag-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-xs);
+  margin: 0;
+  padding: 0;
+}
+
+.tag-list li {
+  margin: 0;
+  max-width: none;
+}
+
+.tag {
+  display: inline-block;
+  font-size: var(--step--1);
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 0.2rem 0.55rem;
+  background: var(--surface-quiet);
+  text-decoration: none;
+}
+
+.tag-theme {
+  border-color: var(--rule-strong);
+  color: var(--accent-deep);
+  background: var(--surface-mist);
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: var(--space-s);
+  top: -100px;
+  z-index: 100;
+  background: var(--ohv-soft-white);
+  color: var(--accent-deep);
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--accent-deep);
+  font-weight: 600;
+  transition: top 120ms linear;
+}
+
+.skip-link:focus {
+  top: var(--space-s);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Wordmark: thin sans "OUR HEALING" over editorial serif "VOICES".
+   A developed text treatment — never a replacement for the official artwork. */
+.wordmark {
+  display: inline-block;
+  line-height: 1;
+  text-decoration: none;
+  color: inherit;
+}
+
+.wordmark__our {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.78em;
+}
+
+.wordmark__voices {
+  display: block;
+  font-family: var(--font-editorial);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 1.35em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

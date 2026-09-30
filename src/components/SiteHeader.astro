@@ -1,0 +1,227 @@
+---
+import { NAV, NAV_ACTION } from '../lib/site';
+
+const current = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isCurrent = (href: string) => {
+  const clean = href.replace(/\/+$/, '') || '/';
+  return clean === '/' ? current === '/' : current === clean || current.startsWith(clean + '/');
+};
+---
+
+<header class="header">
+  <div class="shell header__inner">
+    <a class="wordmark header__wordmark" href="/">
+      <span class="wordmark__our">Our Healing</span>
+      <span class="wordmark__voices">Voices</span>
+      <span class="visually-hidden">— home</span>
+    </a>
+
+    <button
+      class="header__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      data-nav-toggle
+    >
+      <span class="header__toggle-label" data-nav-label>Menu</span>
+      <span class="header__toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+
+    <nav id="site-nav" class="header__nav" aria-label="Primary" data-nav>
+      <ul class="header__list">
+        {
+          NAV.map((item) => (
+            <li>
+              <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="header__actions">
+        <a
+          class="btn btn--compact"
+          href={NAV_ACTION.href}
+          aria-current={isCurrent(NAV_ACTION.href) ? 'page' : undefined}
+        >
+          {NAV_ACTION.label}
+        </a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    background: var(--surface-quiet);
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    z-index: 20;
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-m);
+    padding-block: var(--space-s);
+  }
+
+  .header__wordmark {
+    font-size: 1.05rem;
+    color: var(--accent-deep);
+    padding-block: 0.25rem;
+  }
+
+  .header__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 48px;
+    padding: 0.5rem 0.25rem;
+    background: none;
+    border: 0;
+    color: var(--ink);
+    font: inherit;
+    font-size: var(--step--1);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .header__toggle-bars {
+    display: inline-grid;
+    gap: 4px;
+    width: 22px;
+  }
+
+  .header__toggle-bars span {
+    display: block;
+    height: 1.5px;
+    background: currentColor;
+  }
+
+  .header__nav {
+    display: none;
+  }
+
+  .header__nav.is-open {
+    display: block;
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    background: var(--surface-quiet);
+    border-bottom: 1px solid var(--rule);
+    padding: var(--space-s) var(--space-m) var(--space-m);
+  }
+
+  .header__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .header__list li {
+    max-width: none;
+  }
+
+  .header__list a {
+    display: block;
+    padding: 0.85rem 0;
+    min-height: 48px;
+    font-size: var(--step-0);
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .header__list a[aria-current='page'] {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .header__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-top: var(--space-s);
+  }
+
+  .btn--compact {
+    padding: 0.6rem 1.1rem;
+    min-height: 44px;
+  }
+
+  @media (min-width: 62rem) {
+    .header__toggle {
+      display: none;
+    }
+
+    .header__nav,
+    .header__nav.is-open {
+      display: flex;
+      position: static;
+      align-items: center;
+      gap: var(--space-m);
+      padding: 0;
+      border: 0;
+      background: none;
+    }
+
+    .header__list {
+      display: flex;
+      gap: var(--space-m);
+    }
+
+    .header__list a {
+      border: 0;
+      padding: 0.25rem 0;
+      font-size: var(--step--1);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      min-height: auto;
+    }
+
+    .header__list a[aria-current='page'] {
+      border-bottom: 1px solid currentColor;
+    }
+
+    .header__actions {
+      margin: 0;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  const label = document.querySelector<HTMLElement>('[data-nav-label]');
+
+  if (toggle && nav && label) {
+    const setOpen = (open: boolean) => {
+      nav.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      label.textContent = open ? 'Close' : 'Menu';
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    // Reset state when crossing into the desktop layout.
+    const desktop = window.matchMedia('(min-width: 62rem)');
+    desktop.addEventListener('change', (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>

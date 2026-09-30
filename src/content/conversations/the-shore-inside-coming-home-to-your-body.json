@@ -1,0 +1,56 @@
+{
+  "id": "the-shore-inside-coming-home-to-your-body",
+  "slug": "the-shore-inside-coming-home-to-your-body",
+  "episodeNumber": 51,
+  "title": "\"The Shore Inside: Coming Home To Your Body\" with Carolyn Contreras (Aunt Sea)",
+  "publicationDate": "2025-10-17",
+  "guest": {
+    "id": "carolyn-contreras",
+    "name": "Carolyn Contreras",
+    "shortContext": null,
+    "image": null
+  },
+  "description": {
+    "source": "",
+    "short": "Carolyn Contreras, known as Aunt Sea, on feelings, emotional intelligence, and coming home to the body.",
+    "full": "Carolyn Contreras, known as Aunt Sea, talks with Aaron about emotional intelligence and feelings, about body awareness, and about what it means to come home to your own body as part of healing."
+  },
+  "platforms": {
+    "youtubeUrl": null,
+    "youtubeVideoId": null,
+    "youtubeThumbnail": null,
+    "applePodcastUrl": null,
+    "spotifyEpisodeUrl": null
+  },
+  "topics": [
+    "Emotional intelligence",
+    "Feelings",
+    "Body awareness",
+    "Healing"
+  ],
+  "themes": [
+    "Body",
+    "Healing"
+  ],
+  "image": null,
+  "featured": true,
+  "relatedConversationIds": [],
+  "source": {
+    "sourcePlatform": "Apple Podcasts",
+    "sourceUrl": null,
+    "sourceType": "owner-supplied show presentation",
+    "sourceDate": null,
+    "sourceNotes": "Episode surfaced in the approved seed catalog (02_Content_Source.md). No verified episode-level YouTube or Apple URL is on record yet."
+  },
+  "contentStatus": "developed",
+  "publishingStatus": "published",
+  "disclaimer": "Our Healing Voices shares personal stories and lived experience. These conversations are intended to inform and entertain. They are not medical advice, diagnosis, or treatment, and they are not a substitute for care from a qualified professional.",
+  "seo": {
+    "seoTitle": null,
+    "metaDescription": "Carolyn Contreras, known as Aunt Sea, on feelings, emotional intelligence, and coming home to the body.",
+    "canonicalUrl": null,
+    "ogTitle": null,
+    "ogDescription": "Carolyn Contreras, known as Aunt Sea, on feelings, emotional intelligence, and coming home to the body.",
+    "ogImage": null
+  }
+}

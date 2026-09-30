@@ -1,0 +1,29 @@
+{
+  "id": "malwina-sitarz",
+  "slug": "malwina-sitarz",
+  "name": "Malwina Sitarz",
+  "role": "guest",
+  "image": null,
+  "imageAlt": null,
+  "imageFocus": null,
+  "links": {
+    "websiteUrl": null,
+    "instagramUrl": null,
+    "facebookUrl": "https://www.facebook.com/malwina.sitarz/",
+    "publicEmail": null,
+    "publicPhone": null
+  },
+  "shortContext": null,
+  "conversationIds": [
+    "dive-into-what-makes-you-feel-alive"
+  ],
+  "themes": [
+    "Body",
+    "Creativity"
+  ],
+  "source": {
+    "sourcePlatform": "Apple Podcasts",
+    "sourceUrl": null
+  },
+  "contentStatus": "observed"
+}

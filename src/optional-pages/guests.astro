@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GuestCard from '../components/GuestCard.astro';
+import { getPeopleDirectory } from '../lib/content';
+import { SITE_NAME } from '../lib/site';
+
+const directory = await getPeopleDirectory();
+const host = directory.filter((p) => p.role === 'host');
+const guests = directory.filter((p) => p.role !== 'host');
+
+const description = `The guests who have sat down for a conversation on ${SITE_NAME}, and where to find what they said.`;
+---
+
+<BaseLayout title={`Guests | ${SITE_NAME}`} description={description} path="/guests/">
+  <section class="intro">
+    <div class="shell">
+      <p class="eyebrow">Guests</p>
+      <h1>The guests in these conversations</h1>
+      <p class="lede">
+        Every conversation belongs to someone. Start with a guest and follow them into what they
+        talked about.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      {
+        guests.length > 0 && (
+          <>
+            <h2 class="group-heading">Guests</h2>
+            <ul class="people">
+              {guests.map((person) => (
+                <li><GuestCard person={person} /></li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+
+      {
+        host.length > 0 && (
+          <>
+            <h2 class="group-heading group-heading--spaced">Host</h2>
+            <ul class="people people--host">
+              {host.map((person) => (
+                <li><GuestCard person={person} /></li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .intro {
+    background: var(--surface-mist);
+    padding-block: var(--space-l);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .intro h1 {
+    margin-bottom: var(--space-xs);
+  }
+
+  .group-heading {
+    font-family: var(--font-body);
+    font-size: var(--step--1);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-quiet);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: var(--space-xs);
+    margin-bottom: var(--space-m);
+  }
+
+  .group-heading--spaced {
+    margin-top: var(--space-xl);
+  }
+
+  .people {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  .people li {
+    max-width: none;
+  }
+
+  @media (min-width: 48rem) {
+    .people {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .people--host {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-width: calc(50% - var(--space-m) / 2);
+    }
+  }
+
+  @media (min-width: 68rem) {
+    .people {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .people--host {
+      grid-template-columns: minmax(0, 1fr);
+      max-width: calc(33.333% - var(--space-m) * 2 / 3);
+    }
+  }
+</style>

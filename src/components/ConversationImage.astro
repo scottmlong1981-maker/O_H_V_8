@@ -1,0 +1,110 @@
+---
+import { ARTWORK } from '../lib/site';
+
+interface Props {
+  /** Owner-approved original, when one exists. */
+  src?: string | null;
+  /** Thumbnail derived from the verified video id, or captured by the YouTube sync. */
+  thumbnail?: { url: string; width: number; height: number; fallbackUrl?: string } | null;
+  alt: string;
+  /** "artwork" uses the official cover intact; "brand" uses the neutral brand field. */
+  fallback?: 'artwork' | 'brand';
+  loading?: 'lazy' | 'eager';
+  sizes?: string;
+}
+
+const {
+  src = null,
+  thumbnail = null,
+  alt,
+  fallback = 'brand',
+  loading = 'lazy',
+  sizes = '(min-width: 62rem) 22rem, (min-width: 40rem) 45vw, 100vw',
+} = Astro.props;
+
+// Image priority: approved original → YouTube thumbnail from the sync → official
+// artwork → intentional neutral brand treatment. Nothing is generated or scraped.
+const resolved = src ? { url: src, width: 0, height: 0, fallbackUrl: undefined } : thumbnail;
+const useArtwork = !resolved && fallback === 'artwork';
+---
+
+{
+  resolved ? (
+    <img
+      class="conversation-image"
+      src={resolved.url}
+      alt={alt}
+      loading={loading}
+      decoding="async"
+      width={resolved.width || undefined}
+      height={resolved.height || undefined}
+      sizes={sizes}
+      data-fallback={resolved.fallbackUrl}
+      onerror={
+        resolved.fallbackUrl
+          ? "if(this.dataset.fallback && this.src !== this.dataset.fallback){this.src = this.dataset.fallback;}"
+          : undefined
+      }
+      onload={
+        /*
+         * When a video has no maxresdefault, YouTube does not 404 — it serves a small grey
+         * placeholder (120x90) with a 200, so onerror never fires. Detect it by size and
+         * swap to the standard thumbnail instead.
+         */
+        resolved.fallbackUrl
+          ? "if(this.dataset.fallback && this.naturalWidth < 200 && this.src !== this.dataset.fallback){this.src = this.dataset.fallback;}"
+          : undefined
+      }
+    />
+  ) : useArtwork ? (
+    <img
+      class="conversation-image"
+      src={ARTWORK.src}
+      alt={ARTWORK.alt}
+      width={ARTWORK.width}
+      height={ARTWORK.height}
+      loading={loading}
+      decoding="async"
+      sizes={sizes}
+    />
+  ) : (
+    <div
+      class="brand-field"
+      role={alt ? 'img' : undefined}
+      aria-label={alt || undefined}
+      aria-hidden={alt ? undefined : 'true'}
+    >
+      <span class="wordmark brand-field__mark" aria-hidden="true">
+        <span class="wordmark__our">Our Healing</span>
+        <span class="wordmark__voices">Voices</span>
+      </span>
+    </div>
+  )
+}
+
+<style>
+  .conversation-image {
+    width: 100%;
+    height: 100%;
+    /* Thumbnails sit in a 16:9 frame, so "cover" never actually crops them. */
+    object-fit: cover;
+    background: var(--surface-mist);
+  }
+
+  .brand-field {
+    width: 100%;
+    height: 100%;
+    min-height: 3.5rem;
+    display: grid;
+    place-items: center;
+    background: var(--surface-deep);
+    color: var(--ink-inverse);
+    padding: var(--space-m);
+  }
+
+  .brand-field__mark {
+    font-size: 0.95rem;
+    opacity: 0.85;
+    text-align: center;
+  }
+</style>

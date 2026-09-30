@@ -1,0 +1,57 @@
+{
+  "id": "created-for-greatness",
+  "slug": "created-for-greatness",
+  "episodeNumber": null,
+  "title": "\"Created for Greatness\" with Angela Lahman",
+  "publicationDate": "2024-08-30",
+  "guest": {
+    "id": "angela-lahman",
+    "name": "Angela Lahman",
+    "shortContext": null,
+    "image": null
+  },
+  "description": {
+    "source": "",
+    "short": "Angela Lahman on family, bravery, and living intentionally.",
+    "full": "Angela Lahman joins Aaron to talk about family and bravery, about the energy a person brings to a life, and about the transformation that intentional living can ask of someone."
+  },
+  "platforms": {
+    "youtubeUrl": null,
+    "youtubeVideoId": null,
+    "youtubeThumbnail": null,
+    "applePodcastUrl": null,
+    "spotifyEpisodeUrl": null
+  },
+  "topics": [
+    "Family",
+    "Bravery",
+    "Energy",
+    "Intentional living",
+    "Transformation"
+  ],
+  "themes": [
+    "Relationships",
+    "Transformation"
+  ],
+  "image": null,
+  "featured": true,
+  "relatedConversationIds": [],
+  "source": {
+    "sourcePlatform": "Apple Podcasts",
+    "sourceUrl": null,
+    "sourceType": "owner-supplied show presentation",
+    "sourceDate": null,
+    "sourceNotes": "Episode surfaced in the approved seed catalog (02_Content_Source.md). No verified episode-level YouTube or Apple URL is on record yet."
+  },
+  "contentStatus": "developed",
+  "publishingStatus": "published",
+  "disclaimer": "Our Healing Voices shares personal stories and lived experience. These conversations are intended to inform and entertain. They are not medical advice, diagnosis, or treatment, and they are not a substitute for care from a qualified professional.",
+  "seo": {
+    "seoTitle": null,
+    "metaDescription": "Angela Lahman on family, bravery, and living intentionally.",
+    "canonicalUrl": null,
+    "ogTitle": null,
+    "ogDescription": "Angela Lahman on family, bravery, and living intentionally.",
+    "ogImage": null
+  }
+}

@@ -1,0 +1,93 @@
+---
+import PlatformIcon from './PlatformIcon.astro';
+import {
+  CTA,
+  YOUTUBE_CHANNEL_URL,
+  APPLE_PODCASTS_SHOW_URL,
+  SPOTIFY_SHOW_URL,
+} from '../lib/site';
+
+interface Props {
+  youtubeUrl?: string | null;
+  applePodcastUrl?: string | null;
+  spotifyEpisodeUrl?: string | null;
+  /** Show a short note when a destination falls back to the show level. */
+  explainFallbacks?: boolean;
+  variant?: 'default' | 'inverse';
+}
+
+const {
+  youtubeUrl = null,
+  applePodcastUrl = null,
+  spotifyEpisodeUrl = null,
+  explainFallbacks = false,
+  variant = 'default',
+} = Astro.props;
+
+// Never guess an episode URL. Fall back to the approved show-level destination.
+const watchHref = youtubeUrl ?? YOUTUBE_CHANNEL_URL;
+const appleHref = applePodcastUrl ?? APPLE_PODCASTS_SHOW_URL;
+const spotifyHref = spotifyEpisodeUrl ?? SPOTIFY_SHOW_URL;
+
+const showLevel: string[] = [];
+if (explainFallbacks && !youtubeUrl) showLevel.push('the channel on YouTube');
+if (explainFallbacks && !applePodcastUrl) showLevel.push('the show on Apple Podcasts');
+if (explainFallbacks && !spotifyEpisodeUrl) showLevel.push('the show on Spotify');
+
+const note =
+  showLevel.length > 0
+    ? `Direct episode links for this conversation have not been verified yet, so these open ${
+        showLevel.length === 1
+          ? showLevel[0]
+          : showLevel.slice(0, -1).join(', ') + ' and ' + showLevel[showLevel.length - 1]
+      }.`
+    : null;
+---
+
+<div class:list={['actions', variant === 'inverse' && 'section-dark']}>
+  <div class="btn-row actions__row">
+    <a class="btn" href={watchHref} target="_blank" rel="noopener noreferrer" data-analytics="youtube_click">
+      <PlatformIcon name="youtube" size={18} />
+      {CTA.watch}
+    </a>
+    <a
+      class="btn btn-secondary"
+      href={spotifyHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-analytics="spotify_click"
+    >
+      <PlatformIcon name="spotify" size={18} />
+      {CTA.listenSpotify}
+    </a>
+    <a
+      class="btn btn-secondary"
+      href={appleHref}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-analytics="apple_podcast_click"
+    >
+      <PlatformIcon name="apple" size={18} />
+      {CTA.listenApple}
+    </a>
+  </div>
+
+  {note && <p class="actions__note">{note}</p>}
+</div>
+
+<style>
+  .actions__row {
+    margin-top: 0;
+  }
+
+  .actions__note {
+    font-size: var(--step--1);
+    color: var(--ink-quiet);
+    margin: var(--space-xs) 0 0;
+    max-width: 60ch;
+  }
+
+  .actions.section-dark .actions__note {
+    color: var(--ink-inverse-soft);
+  }
+</style>

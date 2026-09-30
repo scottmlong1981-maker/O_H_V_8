@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_NAME, CTA } from '../lib/site';
+
+const description = `Resources connected to ${SITE_NAME}. This page is being gathered and will grow over time.`;
+---
+
+<BaseLayout title={`Resources | ${SITE_NAME}`} description={description} path="/resources/">
+  <section class="intro">
+    <div class="shell">
+      <p class="eyebrow">Resources</p>
+      <h1>Resources</h1>
+    </div>
+  </section>
+
+  <div class="shell shell-narrow page">
+    <section class="soon" aria-labelledby="soon-heading">
+      <p class="soon__label">Coming soon</p>
+      <h2 id="soon-heading" class="soon__text">
+        This one is still being gathered.
+      </h2>
+      <p class="soon__note">
+        In time this page may hold books, web resources, and other materials connected to the
+        conversations. Nothing is listed here until it has been chosen deliberately.
+      </p>
+    </section>
+
+    <section class="meanwhile" aria-labelledby="meanwhile-heading">
+      <h2 id="meanwhile-heading" class="meanwhile__heading">In the meantime</h2>
+      <p>The conversations themselves are the resource that already exists.</p>
+      <div class="btn-row">
+        <a class="btn" href="/conversations/">{CTA.explore}</a>
+        <a class="btn btn-secondary" href="/guests/">Meet the guests</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .intro {
+    background: var(--surface-mist);
+    padding-block: var(--space-l);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .intro h1 {
+    margin-bottom: 0;
+  }
+
+  .page {
+    display: grid;
+    gap: var(--space-xl);
+    padding-block: var(--space-xl);
+  }
+
+  .soon {
+    border-left: 3px solid var(--accent);
+    background: var(--surface-quiet);
+    border-radius: var(--radius);
+    padding: var(--space-l) var(--space-m);
+  }
+
+  .soon__label {
+    font-size: var(--step--1);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0 0 var(--space-xs);
+  }
+
+  .soon__text {
+    font-size: var(--step-3);
+    margin: 0 0 var(--space-s);
+    max-width: 22ch;
+  }
+
+  .soon__note {
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .meanwhile__heading {
+    font-family: var(--font-body);
+    font-size: var(--step--1);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-quiet);
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: var(--space-xs);
+    margin-bottom: var(--space-m);
+  }
+</style>

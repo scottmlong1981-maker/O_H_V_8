@@ -1,0 +1,32 @@
+{
+  "name": "our-healing-voices",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Website for the Our Healing Voices podcast, hosted and created by Aaron Lahman.",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "predev": "node scripts/check-content.mjs",
+    "prebuild": "node scripts/check-content.mjs",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "content:check": "node scripts/check-content.mjs",
+    "sync:youtube": "node scripts/sync-youtube.mjs",
+    "sync:youtube:optional": "node scripts/sync-youtube.mjs --optional",
+    "build:netlify": "npm run sync:youtube:optional && astro build"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^5.18.2",
+    "fuse.js": "^7.5.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@playwright/test": "^1.62.1",
+    "axe-core": "^4.13.0",
+    "playwright": "^1.62.1",
+    "typescript": "^5.9.3"
+  }
+}

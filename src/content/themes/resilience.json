@@ -1,0 +1,11 @@
+{
+  "id": "resilience",
+  "slug": "resilience",
+  "name": "Resilience",
+  "description": "Conversations about what people keep choosing after something hard.",
+  "conversationIds": [
+    "sleepless-nights-endless-love",
+    "baby-coming-bungalow-rocking-and-grieving-still"
+  ],
+  "contentStatus": "developed"
+}

@@ -1,0 +1,56 @@
+{
+  "id": "womens-health-physical-therapy",
+  "slug": "womens-health-physical-therapy",
+  "episodeNumber": null,
+  "title": "\"Women’s Health Physical Therapy\" with Dr. Dawn Andalon",
+  "publicationDate": "2023-05-06",
+  "guest": {
+    "id": "dr-dawn-andalon",
+    "name": "Dr. Dawn Andalon",
+    "shortContext": null,
+    "image": null
+  },
+  "description": {
+    "source": "",
+    "short": "Dr. Dawn Andalon on women's health physical therapy, caregiving through cancer, and grief.",
+    "full": "Dr. Dawn Andalon talks with Aaron about women's wellness and physical therapy, about caregiving through cancer, and about the grief carried alongside that work."
+  },
+  "platforms": {
+    "youtubeUrl": null,
+    "youtubeVideoId": null,
+    "youtubeThumbnail": null,
+    "applePodcastUrl": null,
+    "spotifyEpisodeUrl": null
+  },
+  "topics": [
+    "Women's wellness",
+    "Physical therapy",
+    "Cancer caregiving",
+    "Grief"
+  ],
+  "themes": [
+    "Body",
+    "Grief"
+  ],
+  "image": null,
+  "featured": false,
+  "relatedConversationIds": [],
+  "source": {
+    "sourcePlatform": "Apple Podcasts",
+    "sourceUrl": null,
+    "sourceType": "owner-supplied show presentation",
+    "sourceDate": null,
+    "sourceNotes": "Episode surfaced in the approved seed catalog (02_Content_Source.md). No verified episode-level YouTube or Apple URL is on record yet."
+  },
+  "contentStatus": "developed",
+  "publishingStatus": "published",
+  "disclaimer": "Our Healing Voices shares personal stories and lived experience. These conversations are intended to inform and entertain. They are not medical advice, diagnosis, or treatment, and they are not a substitute for care from a qualified professional.",
+  "seo": {
+    "seoTitle": null,
+    "metaDescription": "Dr. Dawn Andalon on women's health physical therapy, caregiving through cancer, and grief.",
+    "canonicalUrl": null,
+    "ogTitle": null,
+    "ogDescription": "Dr. Dawn Andalon on women's health physical therapy, caregiving through cancer, and grief.",
+    "ogImage": null
+  }
+}

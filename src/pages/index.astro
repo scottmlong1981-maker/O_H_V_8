@@ -1,0 +1,472 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ConversationCard from '../components/ConversationCard.astro';
+import ConversationImage from '../components/ConversationImage.astro';
+import PlatformActions from '../components/PlatformActions.astro';
+import PlayOverlay from '../components/PlayOverlay.astro';
+import {
+  getPublishedConversations,
+  getLatest,
+  getThemesWithCounts,
+  formatDate,
+  cardDescription,
+  youtubeThumbnail,
+} from '../lib/content';
+import { ARTWORK, AARON_IMAGES, CATEGORY, HOST_NAME, SITE_NAME, CTA } from '../lib/site';
+
+const conversations = await getPublishedConversations();
+// Both follow the YouTube channel on a synced build: the newest upload is the Latest
+// Conversation, and the six before it are Recent Conversations, newest to oldest.
+const latest = getLatest(conversations);
+const recent = conversations.filter((c) => c !== latest).slice(0, 6);
+const themes = await getThemesWithCounts();
+const latestThumbnail = latest ? youtubeThumbnail(latest) : null;
+const latestIsVideo = Boolean(latestThumbnail && latest?.platforms.youtubeVideoId);
+const latestSummary = latest ? cardDescription(latest) : '';
+
+const description =
+  'Our Healing Voices is a podcast hosted by Aaron Lahman. Conversations with humans engaged in their own self-healing — personal stories, lived experience, and the paths people take.';
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'PodcastSeries',
+    name: SITE_NAME,
+    description,
+    url: new URL('/', Astro.site).href,
+    image: new URL(ARTWORK.src, Astro.site).href,
+    genre: CATEGORY,
+    author: { '@type': 'Person', name: HOST_NAME },
+  },
+];
+---
+
+<BaseLayout
+  title={`${SITE_NAME} — a podcast with Aaron Lahman`}
+  description={description}
+  path="/"
+  structuredData={structuredData}
+>
+  <!-- 1. Hero / Show identity -->
+  <section class="hero section-dark">
+    <div class="shell hero__inner">
+      <div class="hero__text">
+        <h1 class="hero__title">
+          <span class="wordmark hero__wordmark">
+            <span class="wordmark__our">Our Healing</span>
+            <span class="wordmark__voices">Voices</span>
+          </span>
+        </h1>
+        <p class="hero__lede">
+          Conversations with humans who are engaged in their own healing — and who are willing to
+          say out loud how they got here.
+        </p>
+        <div class="hero__platforms">
+          <PlatformActions variant="inverse" />
+        </div>
+      </div>
+
+      <div class="hero__art">
+        <img
+          src={ARTWORK.src}
+          alt={ARTWORK.alt}
+          width={ARTWORK.width}
+          height={ARTWORK.height}
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Observed voice -->
+  <section class="quote section-dark">
+    <div class="shell">
+      <p class="eyebrow">In Aaron's words</p>
+      <blockquote class="quote__text">
+        <p>
+          “I am Aaron Lahman. I am in awe of humans. I interview humans that are engaged in their
+          self-healing.”
+        </p>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- 2. Latest conversation -->
+  {
+    latest && (
+      <section class="section" aria-labelledby="latest-heading">
+        <div class="shell">
+          <p class="eyebrow">Latest conversation</p>
+          <div class="latest">
+            <a
+              class:list={['latest__media', (latest.image || latestThumbnail) && 'latest__media--video']}
+              href={`/conversations/${latest.slug}/`}
+              tabindex="-1"
+              aria-hidden="true"
+            >
+              <ConversationImage
+                src={latest.image}
+                thumbnail={latestThumbnail}
+                alt=""
+                fallback="artwork"
+                loading="eager"
+                sizes="(min-width: 62rem) 28rem, 100vw"
+              />
+              {latestIsVideo && <PlayOverlay size="large" />}
+            </a>
+            <div class="latest__body">
+              <p class="meta">
+                <time datetime={latest.publicationDate}>{formatDate(latest.publicationDate)}</time>
+                {latest.guest.name && <><span aria-hidden="true"> / </span>{latest.guest.name}</>}
+              </p>
+              <h2 id="latest-heading" class="latest__title">
+                <a href={`/conversations/${latest.slug}/`}>{latest.title}</a>
+              </h2>
+              {latestSummary && <p class="latest__text">{latestSummary}</p>}
+              <PlatformActions
+                youtubeUrl={latest.platforms.youtubeUrl}
+                applePodcastUrl={latest.platforms.applePodcastUrl}
+                spotifyEpisodeUrl={latest.platforms.spotifyEpisodeUrl}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 3. About Our Healing Voices -->
+  <section class="section section-mist" aria-labelledby="about-heading">
+    <div class="shell shell-narrow">
+      <p class="eyebrow">About</p>
+      <h2 id="about-heading">Our Healing Voices</h2>
+      <p>
+        Our Healing Voices is a podcast of conversations with people who are engaged in their own
+        self-healing. Aaron Lahman hosts. The people who sit down with him talk about what they have
+        lived through and what they are still working on — grief, love, the body, parenthood,
+        resilience, purpose. Nothing here is a programme or a method. Each conversation is one
+        person's account of their own path, told in their own words, and it is offered in the belief
+        that hearing someone say it out loud can matter to someone else.
+      </p>
+      <p class="btn-row">
+        <a class="link-quiet" href="/about/">More about the show</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 4. Meet Aaron -->
+  <section class="section" aria-labelledby="aaron-heading">
+    <div class="shell aaron">
+      <div class="aaron__text">
+        <p class="eyebrow">The host</p>
+        <h2 id="aaron-heading">Meet Aaron</h2>
+        <p>
+          Aaron Lahman is in awe of humans. That is where this show starts. He is drawn to people
+          who are healing, to people who care about the Earth, to people who love people — and he
+          asks them about it. He listens more than he instructs. He has also brought his own grief,
+          his own new fatherhood, and his own healing into the feed rather than keeping the
+          microphone pointed only outward.
+        </p>
+        <p class="btn-row">
+          <a class="link-quiet" href="/about/">More about Aaron</a>
+        </p>
+      </div>
+
+      <figure class="aaron__figure">
+        <img
+          src={AARON_IMAGES.speaking.src}
+          alt={AARON_IMAGES.speaking.alt}
+          width={AARON_IMAGES.speaking.width}
+          height={AARON_IMAGES.speaking.height}
+          loading="lazy"
+          decoding="async"
+          sizes="(min-width: 62rem) 32rem, 100vw"
+        />
+      </figure>
+    </div>
+  </section>
+
+  <!-- 5. Explore conversations -->
+  <section class="section section-mist" aria-labelledby="explore-heading">
+    <div class="shell">
+      <p class="eyebrow">Explore</p>
+      <h2 id="explore-heading">Find a conversation by what it is about</h2>
+      <p class="lede explore__lede">
+        These are the recurring meanings that run through the conversations. Start anywhere.
+      </p>
+
+      <ul class="explore__grid">
+        {
+          themes.map((theme) => (
+            <li>
+              <a class="explore__card" href={`/conversations/?theme=${encodeURIComponent(theme.name)}`}>
+                <span class="explore__name">{theme.name}</span>
+                <span class="explore__count">
+                  {theme.conversationCount} {theme.conversationCount === 1 ? 'conversation' : 'conversations'}
+                </span>
+                {theme.description && <span class="explore__desc">{theme.description}</span>}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="btn-row">
+        <a class="btn" href="/conversations/">{CTA.explore}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Recent conversations: newest to oldest, after the latest -->
+  {
+    recent.length > 0 && (
+      <section class="section" aria-labelledby="recent-heading">
+        <div class="shell">
+          <p class="eyebrow">Human stories</p>
+          <h2 id="recent-heading">Recent Conversations</h2>
+          <ul class="feature-grid">
+            {recent.map((c) => (
+              <li><ConversationCard conversation={c} /></li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- 7. Watch / Listen -->
+  <section class="section section-dark" aria-labelledby="watch-heading">
+    <div class="shell shell-narrow">
+      <p class="eyebrow">Watch or listen</p>
+      <h2 id="watch-heading">Where the conversations live</h2>
+      <p class="lede">
+        Every conversation is on YouTube. The show is also on Spotify and Apple Podcasts.
+      </p>
+      <PlatformActions variant="inverse" />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    background: var(--surface-deep);
+    color: var(--ink-inverse);
+    padding-block: var(--space-xl);
+  }
+
+  .hero__inner {
+    display: grid;
+    gap: var(--space-l);
+    align-items: center;
+  }
+
+  .hero__title {
+    margin: 0 0 var(--space-s);
+  }
+
+  .hero__wordmark {
+    font-size: clamp(2.1rem, 1.4rem + 3.6vw, 4rem);
+  }
+
+  .hero__lede {
+    font-family: var(--font-editorial);
+    font-size: var(--step-2);
+    line-height: 1.4;
+    color: var(--ink-inverse-soft);
+    max-width: 32ch;
+  }
+
+  .hero__platforms {
+    margin-top: var(--space-m);
+  }
+
+  .hero__art img {
+    width: 100%;
+    max-width: 26rem;
+    height: auto;
+    border: 1px solid var(--rule-inverse);
+  }
+
+  .quote {
+    background: var(--surface-deepest);
+    padding-block: var(--space-l);
+  }
+
+  .quote__text {
+    margin: 0;
+    max-width: 46ch;
+  }
+
+  .quote__text p {
+    font-family: var(--font-editorial);
+    font-style: italic;
+    font-size: var(--step-2);
+    line-height: 1.4;
+    color: var(--ink-inverse);
+    margin: 0;
+    max-width: none;
+  }
+
+  .latest {
+    display: grid;
+    gap: var(--space-m);
+    align-items: start;
+  }
+
+  .latest__media {
+    position: relative;
+    display: block;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    overflow: hidden;
+    max-width: 28rem;
+  }
+
+  /* With a video on record the thumbnail keeps its natural 16:9 frame. */
+  .latest__media--video {
+    aspect-ratio: 16 / 9;
+  }
+
+  .latest__title {
+    font-size: var(--step-3);
+    margin: var(--space-2xs) 0 var(--space-xs);
+  }
+
+  .latest__title a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .latest__title a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .latest__text {
+    color: var(--ink-soft);
+    font-size: var(--step-1);
+    font-family: var(--font-editorial);
+    line-height: 1.5;
+  }
+
+  .explore__lede {
+    max-width: 46ch;
+  }
+
+  .explore__grid {
+    list-style: none;
+    margin: var(--space-m) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-s);
+  }
+
+  .explore__grid li {
+    max-width: none;
+  }
+
+  .explore__card {
+    display: grid;
+    gap: 0.15rem;
+    height: 100%;
+    padding: var(--space-s) var(--space-m);
+    background: var(--surface-quiet);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--ink);
+  }
+
+  .explore__card:hover {
+    background: var(--ohv-soft-white);
+    border-left-color: var(--accent-deep);
+  }
+
+  .explore__name {
+    font-family: var(--font-editorial);
+    font-size: var(--step-1);
+    color: var(--accent-deep);
+  }
+
+  .explore__count {
+    font-size: var(--step--1);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-quiet);
+  }
+
+  .explore__desc {
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  .aaron {
+    display: grid;
+    gap: var(--space-l);
+    align-items: center;
+  }
+
+  .aaron__figure {
+    margin: 0;
+  }
+
+  .aaron__figure img {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+  }
+
+  .feature-grid {
+    list-style: none;
+    margin: var(--space-m) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  .feature-grid li {
+    max-width: none;
+  }
+
+  @media (min-width: 48rem) {
+    .explore__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .feature-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 62rem) {
+    .aaron {
+      grid-template-columns: 1fr 32rem;
+    }
+
+    .hero__inner {
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: var(--space-xl);
+    }
+
+    .hero__art {
+      justify-self: end;
+    }
+
+    .latest {
+      grid-template-columns: 28rem 1fr;
+      gap: var(--space-l);
+    }
+
+    .explore__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .feature-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

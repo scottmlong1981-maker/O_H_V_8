@@ -1,0 +1,12 @@
+{
+  "id": "body",
+  "slug": "body",
+  "name": "Body",
+  "description": "Conversations that stay close to the body — how it holds experience and how people return to it.",
+  "conversationIds": [
+    "the-shore-inside-coming-home-to-your-body",
+    "womens-health-physical-therapy",
+    "dive-into-what-makes-you-feel-alive"
+  ],
+  "contentStatus": "developed"
+}

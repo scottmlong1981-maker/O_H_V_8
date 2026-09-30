@@ -1,0 +1,307 @@
+---
+import PlatformIcon from './PlatformIcon.astro';
+import { formatDate, type Conversation, type Person } from '../lib/content';
+import { SITE_NAME } from '../lib/site';
+
+interface Props {
+  person: Person & { photo: string | null; conversations: Conversation[] };
+}
+
+const { person } = Astro.props;
+const isHost = person.role === 'host';
+
+const alt =
+  person.imageAlt ??
+  (isHost
+    ? `${person.name}, host and creator of ${SITE_NAME}.`
+    : `${person.name}, a guest on ${SITE_NAME}.`);
+
+// Only destinations recorded from an approved source appear. Empty fields vanish.
+const connect = [
+  person.links.websiteUrl && {
+    label: 'Website',
+    href: person.links.websiteUrl,
+    icon: null,
+    describe: `${person.name}'s website`,
+  },
+  person.links.instagramUrl && {
+    label: 'Instagram',
+    href: person.links.instagramUrl,
+    icon: 'instagram' as const,
+    describe: `${person.name} on Instagram`,
+  },
+  person.links.facebookUrl && {
+    label: 'Facebook',
+    href: person.links.facebookUrl,
+    icon: 'facebook' as const,
+    describe: `${person.name} on Facebook`,
+  },
+  person.links.publicEmail && {
+    label: 'Email',
+    href: `mailto:${person.links.publicEmail}`,
+    icon: null,
+    describe: `Email ${person.name}`,
+    internal: true,
+  },
+  person.links.publicPhone && {
+    label: person.links.publicPhone,
+    href: `tel:${person.links.publicPhone.replace(/[^0-9+]/g, '')}`,
+    icon: null,
+    describe: `Call ${person.name}`,
+    internal: true,
+  },
+].filter(Boolean) as {
+  label: string;
+  href: string;
+  icon: 'instagram' | 'facebook' | null;
+  describe: string;
+  internal?: boolean;
+}[];
+---
+
+<article class="guest">
+  <div class:list={['guest__media', !person.photo && 'guest__media--brand']}>
+    {
+      person.photo ? (
+        <img
+          class="guest__photo"
+          src={person.photo}
+          alt={alt}
+          loading="lazy"
+          decoding="async"
+          style={person.imageFocus ? `object-position: ${person.imageFocus};` : undefined}
+        />
+      ) : (
+        <div class="guest__field" aria-hidden="true">
+          <span class="wordmark guest__mark">
+            <span class="wordmark__our">Our Healing</span>
+            <span class="wordmark__voices">Voices</span>
+          </span>
+        </div>
+      )
+    }
+  </div>
+
+  <div class="guest__body">
+    {isHost && <p class="guest__role">Host &amp; Creator</p>}
+    <h3 class="guest__name">{person.name}</h3>
+
+    {person.shortContext && <p class="guest__context">{person.shortContext}</p>}
+
+    <ul class="guest__conversations">
+      {
+        person.conversations.map((c) => (
+          <li>
+            <a href={`/conversations/${c.slug}/`}>{c.title}</a>
+            <span class="guest__date">
+              <time datetime={c.publicationDate}>{formatDate(c.publicationDate)}</time>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      person.themes.length > 0 && (
+        <ul class="tag-list guest__themes">
+          {person.themes.map((theme) => (
+            <li><span class="tag tag-theme">{theme}</span></li>
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      connect.length > 0 && (
+        <div class="guest__connect">
+          <h4 class="guest__connect-label" id={`connect-${person.slug}`}>Connect</h4>
+          <ul class="guest__links" aria-labelledby={`connect-${person.slug}`}>
+            {connect.map((link) => (
+              <li>
+                <a
+                  class="guest__link"
+                  href={link.href}
+                  target={link.internal ? undefined : '_blank'}
+                  rel={link.internal ? undefined : 'noopener noreferrer'}
+                >
+                  {link.icon && <PlatformIcon name={link.icon} size={14} />}
+                  <span>{link.label}</span>
+                  <span class="visually-hidden">
+                    {' '}— {link.describe}{link.internal ? '' : ' (opens in a new tab)'}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .guest {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100%;
+    background: var(--surface-quiet);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  /* One consistent frame for every card, photo or not. */
+  .guest__media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface-mist);
+  }
+
+  .guest__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Faces usually sit in the upper half of a portrait, so bias the crop upward. */
+    object-position: center 30%;
+  }
+
+  /* No approved photograph on file: a quiet brand field, never a substituted face. */
+  .guest__media--brand {
+    aspect-ratio: 5 / 2;
+  }
+
+  .guest__field {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    background: var(--surface-deep);
+    color: var(--ink-inverse);
+    padding: var(--space-s);
+  }
+
+  .guest__mark {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    text-align: center;
+  }
+
+  .guest__body {
+    padding: var(--space-m);
+    display: grid;
+    align-content: start;
+    gap: var(--space-xs);
+  }
+
+  .guest__role {
+    font-size: var(--step--1);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0;
+  }
+
+  .guest__name {
+    font-size: var(--step-2);
+    margin: 0;
+  }
+
+  .guest__context {
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    margin: 0;
+  }
+
+  .guest__conversations {
+    list-style: none;
+    margin: var(--space-2xs) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .guest__conversations li {
+    max-width: none;
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .guest__conversations a {
+    font-family: var(--font-editorial);
+    font-size: var(--step-1);
+    line-height: 1.3;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule-strong);
+    padding-bottom: 0.15rem;
+  }
+
+  .guest__conversations a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  .guest__date {
+    font-size: var(--step--1);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-quiet);
+  }
+
+  .guest__themes {
+    margin-top: var(--space-2xs);
+  }
+
+  /* Deliberately quiet: the conversation stays the loudest thing on the card. */
+  .guest__connect {
+    margin-top: var(--space-xs);
+    border-top: 1px solid var(--rule);
+    padding-top: var(--space-s);
+  }
+
+  .guest__connect-label {
+    font-family: var(--font-body);
+    font-size: var(--step--1);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-quiet);
+    margin: 0 0 var(--space-2xs);
+  }
+
+  .guest__links {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs) var(--space-xs);
+    margin: 0;
+    padding: 0;
+  }
+
+  .guest__links li {
+    max-width: none;
+  }
+
+  .guest__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 36px;
+    padding: 0.3rem 0.6rem;
+    font-size: var(--step--1);
+    color: var(--ink-soft);
+    text-decoration: none;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  .guest__link:hover,
+  .guest__link:focus-visible {
+    color: var(--accent-deep);
+    border-color: var(--rule-strong);
+    background: var(--surface-mist);
+  }
+</style>

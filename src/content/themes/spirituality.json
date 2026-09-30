@@ -1,0 +1,10 @@
+{
+  "id": "spirituality",
+  "slug": "spirituality",
+  "name": "Spirituality",
+  "description": "Conversations about the spiritual dimensions people describe in their own healing.",
+  "conversationIds": [
+    "making-space-for-light-joy-and-laughter"
+  ],
+  "contentStatus": "developed"
+}

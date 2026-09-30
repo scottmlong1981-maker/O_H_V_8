@@ -1,0 +1,10 @@
+{
+  "id": "relationships",
+  "slug": "relationships",
+  "name": "Relationships",
+  "description": "Conversations about family and the people we live our lives beside.",
+  "conversationIds": [
+    "created-for-greatness"
+  ],
+  "contentStatus": "developed"
+}

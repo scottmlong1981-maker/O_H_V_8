@@ -1,0 +1,43 @@
+# Our Healing Voices — episode video links
+# ---------------------------------------------------------------------------
+# Paste the YouTube link for an episode next to its name below, and that
+# episode's real thumbnail appears everywhere on the site: the Conversations
+# cards, the home page Latest Conversation, featured cards, related cards, and
+# the video player on the conversation page itself.
+#
+# No API key. No commands to run. Edit this file, save, redeploy.
+#
+# HOW TO GET A LINK
+#   1. Open https://www.youtube.com/@ourhealingvoices
+#   2. Click the episode.
+#   3. Copy the address from the browser bar.
+#   4. Paste it after the "=" on the matching line below.
+#
+# Any of these forms work — paste whatever you copied:
+#   https://www.youtube.com/watch?v=dQw4w9WgXcQ
+#   https://youtu.be/dQw4w9WgXcQ
+#   dQw4w9WgXcQ
+#
+# Leave a line blank if you are not sure which video it is. A blank line keeps
+# the branded green fallback for that episode — that is the correct, honest
+# result, and is much better than pointing at the wrong video.
+#
+# Lines starting with # are notes and are ignored.
+# ---------------------------------------------------------------------------
+
+# "Breathing Into Wholeness" with Lance Huffman — 27 December 2025 (Ep. 52)
+breathing-into-wholeness = https://www.youtube.com/watch?v=WO_gjPyrabQ&t=8s
+# "The Shore Inside: Coming Home To Your Body" with Carolyn Contreras (Aunt Sea) — 17 October 2025 (Ep. 51)
+the-shore-inside-coming-home-to-your-body = https://www.youtube.com/watch?v=juiGjdvtfiw
+# "Sleepless Nights, Endless Love" — Aaron Lahman — 11 August 2025
+sleepless-nights-endless-love = https://www.youtube.com/watch?v=fYzzLKNHG4Q
+# "Created for Greatness" with Angela Lahman — 30 August 2024
+created-for-greatness = https://www.youtube.com/watch?v=3wBIDs0gz2E
+# "Making Space for Light, Joy, & Laughter" with Ambrosia Brown — 29 August 2024
+making-space-for-light-joy-and-laughter = https://www.youtube.com/watch?v=uftSFwnfWAs
+# "Baby Coming, Bungalow Rocking, & Grieving Still" — Aaron Lahman — 11 July 2024
+baby-coming-bungalow-rocking-and-grieving-still = https://www.youtube.com/watch?v=qY_ejnu56yI
+# "Women's Health Physical Therapy" with Dr. Dawn Andalon — 6 May 2023
+womens-health-physical-therapy = https://www.youtube.com/watch?v=szYF2njSK3Q
+# "Dive Into What Makes You Feel Alive" with Malwina Sitarz — 5 April 2023
+dive-into-what-makes-you-feel-alive = https://www.youtube.com/watch?v=p0ldhjS6EzU

@@ -1,0 +1,57 @@
+# Netlify configuration for Our Healing Voices.
+#
+# The build runs the YouTube sync first, then builds the site. The sync is optional:
+# if YOUTUBE_API_KEY is not set, or the API is unreachable, it prints a note and the
+# build carries on with whatever is already linked. A deploy can never fail over it.
+#
+# To switch the automatic sync on:
+#   Netlify → Site configuration → Environment variables → Add a variable
+#     Key:   YOUTUBE_API_KEY
+#     Value: your key
+#   Then Deploys → Trigger deploy → Deploy site.
+#
+# Every deploy from then on fetches the full episode list from YouTube. No terminal.
+#
+# New uploads appear on their own: the scheduled function in netlify/functions/
+# (daily-rebuild.mjs) triggers one build a day. It needs BUILD_HOOK_URL set as an
+# environment variable — see the README, "Automatic YouTube updates".
+
+[build]
+  command = "npm run build:netlify"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  directory = "netlify/functions"
+
+# Redirects also live in public/_redirects (/people → /guests).
+
+[[headers]]
+  for = "/brand/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# The episode list changes with every build, so it is never cached for long.
+[[headers]]
+  for = "/youtube-catalog.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"

@@ -1,0 +1,194 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import { SITE_NAME, HOST_NAME, CATEGORY, ARTWORK, AARON_IMAGES } from '../lib/site';
+
+const description = `About ${SITE_NAME} — a podcast of conversations with people engaged in their own self-healing, hosted by ${HOST_NAME}.`;
+
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: HOST_NAME,
+    jobTitle: 'Host and creator',
+    worksFor: { '@type': 'CreativeWorkSeries', name: SITE_NAME },
+    url: new URL('/about/', Astro.site).href,
+  },
+];
+---
+
+<BaseLayout
+  title={`About | ${SITE_NAME}`}
+  description={description}
+  path="/about/"
+  structuredData={structuredData}
+>
+  <section class="intro">
+    <div class="shell">
+      <p class="eyebrow">About</p>
+      <h1>Our Healing Voices</h1>
+      <p class="lede">
+        A podcast of conversations with humans who are engaged in their own self-healing.
+      </p>
+    </div>
+  </section>
+
+  <div class="shell shell-narrow page">
+    <section aria-labelledby="show-heading">
+      <h2 id="show-heading">The show</h2>
+      <div class="show">
+        <div class="show__text">
+          <p>
+            Our Healing Voices is a podcast hosted and created by {HOST_NAME}. Each episode is a
+            conversation with a person who is engaged in their own healing — someone willing to
+            describe what they have lived through, what it cost, and what they are still working on.
+            The subjects follow the people: grief, love, the body, family and relationships,
+            parenthood, resilience, purpose, spirituality, transformation, the Earth.
+          </p>
+          <p>
+            The show is listed under {CATEGORY}, but it is not a programme of advice. There is no
+            method being taught here and no outcome being promised. There are people, and there are
+            the stories they are willing to tell about their own lives.
+          </p>
+        </div>
+        <div class="show__art">
+          <img
+            src={ARTWORK.src}
+            alt={ARTWORK.alt}
+            width={ARTWORK.width}
+            height={ARTWORK.height}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="why-heading">
+      <h2 id="why-heading">Why these conversations</h2>
+      <p>
+        Healing is not a subject people usually get to speak about at length. It happens in private,
+        it takes years, and it rarely arrives in the shape anyone planned for. What this show offers
+        is time and a willing listener — long enough for someone to say the whole thing rather than
+        the summary.
+      </p>
+      <p>
+        The recurring phrase behind the show is <strong>LOVE &amp; HEAL</strong>. That is the
+        orientation: love for people, and respect for the fact that healing is something a person
+        does themselves, on their own terms and at their own pace. What one guest found may be
+        nothing like what the next one found. Both accounts are worth hearing.
+      </p>
+      <p>
+        So the site is built around people and stories rather than around episode numbers. You can
+        start with a guest, or with a theme that sounds like something you are carrying, and follow
+        it into the next conversation.
+      </p>
+    </section>
+
+    <section aria-labelledby="perspective-heading">
+      <h2 id="perspective-heading">Perspective</h2>
+      <p>
+        These conversations are held with curiosity rather than authority. Aaron is not a doctor, a
+        therapist, or a person with the answers, and the show does not present itself that way.
+        Guests speak for themselves. Their experience is theirs, described in their own words, and it
+        is not offered as a prescription for anyone else.
+      </p>
+      <Disclaimer />
+    </section>
+
+    <section aria-labelledby="aaron-heading">
+      <h2 id="aaron-heading">{HOST_NAME}</h2>
+      <div class="host">
+        <figure class="host__figure">
+          <img
+            src={AARON_IMAGES.portrait.src}
+            alt={AARON_IMAGES.portrait.alt}
+            width={AARON_IMAGES.portrait.width}
+            height={AARON_IMAGES.portrait.height}
+            loading="lazy"
+            decoding="async"
+            sizes="(min-width: 52rem) 18rem, 100vw"
+          />
+        </figure>
+        <div class="host__text">
+      <p>
+        Aaron is in awe of humans. He says so plainly, and it is the clearest description of why this
+        show exists. He is drawn to people who are healing, to people who care deeply about the
+        Earth, and to people who love people — and his part of the conversation is mostly listening.
+      </p>
+      <p>
+        He has also turned the microphone on himself. Episodes about grief that has not finished,
+        about new fatherhood, about sleepless nights and endless love, are his own. He is a host who
+        is also inside the subject, which is part of why guests seem willing to go where they go.
+      </p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .intro {
+    background: var(--surface-mist);
+    padding-block: var(--space-l);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .intro h1 {
+    margin-bottom: var(--space-xs);
+  }
+
+  .page {
+    display: grid;
+    gap: var(--space-xl);
+    padding-block: var(--space-xl);
+  }
+
+  .show {
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  .show__art img {
+    width: 100%;
+    max-width: 20rem;
+    height: auto;
+    border: 1px solid var(--rule);
+  }
+
+  .host {
+    display: grid;
+    gap: var(--space-m);
+    align-items: start;
+  }
+
+  .host__figure {
+    margin: 0;
+  }
+
+  .host__figure img {
+    width: 100%;
+    max-width: 18rem;
+    height: auto;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+  }
+
+  .host__text > :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  @media (min-width: 52rem) {
+    .host {
+      grid-template-columns: 18rem 1fr;
+      gap: var(--space-l);
+    }
+
+    .show {
+      grid-template-columns: 1fr 20rem;
+      gap: var(--space-l);
+      align-items: start;
+    }
+  }
+</style>

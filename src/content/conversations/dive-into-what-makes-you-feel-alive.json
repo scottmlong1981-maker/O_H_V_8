@@ -1,0 +1,58 @@
+{
+  "id": "dive-into-what-makes-you-feel-alive",
+  "slug": "dive-into-what-makes-you-feel-alive",
+  "episodeNumber": null,
+  "title": "\"Dive Into What Makes You Feel Alive\" with Malwina Sitarz",
+  "publicationDate": "2023-04-05",
+  "guest": {
+    "id": "malwina-sitarz",
+    "name": "Malwina Sitarz",
+    "shortContext": null,
+    "image": null
+  },
+  "description": {
+    "source": "",
+    "short": "Malwina Sitarz on movement, creativity, and following what makes you feel alive.",
+    "full": "Malwina Sitarz joins Aaron to talk about movement and creativity — yoga, fitness, breathwork — and about diving into the passions and dreams that make a person feel alive."
+  },
+  "platforms": {
+    "youtubeUrl": null,
+    "youtubeVideoId": null,
+    "youtubeThumbnail": null,
+    "applePodcastUrl": null,
+    "spotifyEpisodeUrl": null
+  },
+  "topics": [
+    "Movement",
+    "Creativity",
+    "Yoga",
+    "Fitness",
+    "Breathwork",
+    "Passions and dreams"
+  ],
+  "themes": [
+    "Body",
+    "Creativity"
+  ],
+  "image": null,
+  "featured": true,
+  "relatedConversationIds": [],
+  "source": {
+    "sourcePlatform": "Apple Podcasts",
+    "sourceUrl": null,
+    "sourceType": "owner-supplied show presentation",
+    "sourceDate": null,
+    "sourceNotes": "Episode surfaced in the approved seed catalog (02_Content_Source.md). No verified episode-level YouTube or Apple URL is on record yet."
+  },
+  "contentStatus": "developed",
+  "publishingStatus": "published",
+  "disclaimer": "Our Healing Voices shares personal stories and lived experience. These conversations are intended to inform and entertain. They are not medical advice, diagnosis, or treatment, and they are not a substitute for care from a qualified professional.",
+  "seo": {
+    "seoTitle": null,
+    "metaDescription": "Malwina Sitarz on movement, creativity, and following what makes you feel alive.",
+    "canonicalUrl": null,
+    "ogTitle": null,
+    "ogDescription": "Malwina Sitarz on movement, creativity, and following what makes you feel alive.",
+    "ogImage": null
+  }
+}

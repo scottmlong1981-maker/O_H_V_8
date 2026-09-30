@@ -1,0 +1,248 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE_NAME, HOST_NAME } from '../../lib/site';
+
+const description = `Send a note to ${SITE_NAME}. A name, an email address, and whatever you want to say.`;
+---
+
+<BaseLayout title={`Reach Out | ${SITE_NAME}`} description={description} path="/reach-out/">
+  <section class="intro">
+    <div class="shell">
+      <p class="eyebrow">Reach Out</p>
+      <h1>Say hello</h1>
+      <p class="lede">
+        If a conversation stayed with you, or there is something you want to say to {HOST_NAME},
+        this reaches him. Take whatever space you need.
+      </p>
+    </div>
+  </section>
+
+  <div class="shell shell-narrow page">
+    <!--
+      Netlify Forms: the build output is static HTML, which Netlify parses at deploy time.
+      `data-netlify` registers the form, the hidden form-name input names it on submit, and
+      netlify-honeypot adds spam protection without a challenge the visitor has to solve.
+    -->
+    <form
+      class="form"
+      name="reach-out"
+      method="POST"
+      action="/reach-out/thank-you/"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      novalidate
+      data-form
+    >
+      <input type="hidden" name="form-name" value="reach-out" />
+
+      <p class="form__honeypot" aria-hidden="true">
+        <label>
+          Leave this field empty
+          <input name="bot-field" tabindex="-1" autocomplete="off" />
+        </label>
+      </p>
+
+      <div class="field">
+        <label class="field__label" for="name">Name <span class="field__required">(required)</span></label>
+        <input
+          class="field__input"
+          id="name"
+          name="name"
+          type="text"
+          autocomplete="name"
+          required
+          aria-describedby="name-error"
+        />
+        <p class="field__error" id="name-error" data-error-for="name" hidden>Please add your name.</p>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="email">
+          Email address <span class="field__required">(required)</span>
+        </label>
+        <input
+          class="field__input"
+          id="email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          aria-describedby="email-error"
+        />
+        <p class="field__error" id="email-error" data-error-for="email" hidden>
+          Please add an email address so a reply can reach you.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="field__label" for="message">
+          Message <span class="field__required">(required)</span>
+        </label>
+        <textarea
+          class="field__input field__input--area"
+          id="message"
+          name="message"
+          rows="7"
+          required
+          aria-describedby="message-error"></textarea>
+        <p class="field__error" id="message-error" data-error-for="message" hidden>
+          Please write a message before sending.
+        </p>
+      </div>
+
+      <p class="form__status" role="alert" data-form-error hidden>
+        Something above needs attention. Please check the fields marked below.
+      </p>
+
+      <div class="btn-row form__actions">
+        <button class="btn" type="submit">Send message</button>
+      </div>
+
+      <p class="form__note">
+        Messages go straight to Our Healing Voices. Your address is used only to reply — nothing
+        else, and no list.
+      </p>
+    </form>
+  </div>
+</BaseLayout>
+
+<style>
+  .intro {
+    background: var(--surface-mist);
+    padding-block: var(--space-l);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .intro h1 {
+    margin-bottom: var(--space-xs);
+  }
+
+  .page {
+    padding-block: var(--space-xl);
+  }
+
+  .form {
+    display: grid;
+    gap: var(--space-m);
+    max-width: 40rem;
+  }
+
+  .form__honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .field {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .field__label {
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-soft);
+  }
+
+  .field__required {
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: var(--ink-quiet);
+  }
+
+  .field__input {
+    min-height: 48px;
+    padding: 0.7rem 0.85rem;
+    font: inherit;
+    font-size: var(--step-0);
+    color: var(--ink);
+    background: var(--surface-quiet);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+  }
+
+  .field__input--area {
+    min-height: 11rem;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  .field__input[aria-invalid='true'] {
+    border-color: #8c2f2f;
+    border-width: 2px;
+  }
+
+  .field__error {
+    margin: 0;
+    font-size: var(--step--1);
+    color: #8c2f2f;
+    font-weight: 600;
+  }
+
+  .form__status {
+    margin: 0;
+    padding: var(--space-s) var(--space-m);
+    border-left: 3px solid #8c2f2f;
+    background: #f6eded;
+    color: #6d2525;
+    font-size: var(--step--1);
+  }
+
+  .form__actions {
+    margin-top: 0;
+  }
+
+  .form__note {
+    font-size: var(--step--1);
+    color: var(--ink-quiet);
+    margin: 0;
+  }
+</style>
+
+<script>
+  // Progressive enhancement only: the form posts and validates natively without this.
+  const form = document.querySelector<HTMLFormElement>('[data-form]');
+
+  if (form) {
+    const summary = form.querySelector<HTMLElement>('[data-form-error]')!;
+    const fields = Array.from(
+      form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]')
+    );
+
+    const errorFor = (field: HTMLInputElement | HTMLTextAreaElement) =>
+      form.querySelector<HTMLElement>(`[data-error-for="${field.name}"]`);
+
+    const validate = (field: HTMLInputElement | HTMLTextAreaElement) => {
+      const valid = field.checkValidity() && field.value.trim().length > 0;
+      field.setAttribute('aria-invalid', String(!valid));
+      const message = errorFor(field);
+      if (message) message.hidden = valid;
+      return valid;
+    };
+
+    for (const field of fields) {
+      field.addEventListener('blur', () => validate(field));
+      field.addEventListener('input', () => {
+        if (field.getAttribute('aria-invalid') === 'true') validate(field);
+      });
+    }
+
+    form.addEventListener('submit', (event) => {
+      const results = fields.map(validate);
+      const firstInvalid = fields[results.indexOf(false)];
+
+      if (firstInvalid) {
+        event.preventDefault();
+        summary.hidden = false;
+        firstInvalid.focus();
+      } else {
+        summary.hidden = true;
+      }
+    });
+  }
+</script>

@@ -1,0 +1,319 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
+import PlatformActions from '../../components/PlatformActions.astro';
+import Disclaimer from '../../components/Disclaimer.astro';
+import ConversationCard from '../../components/ConversationCard.astro';
+import ConversationImage from '../../components/ConversationImage.astro';
+import {
+  getPublishedConversations,
+  getRelated,
+  formatDate,
+  cardDescription,
+  descriptionParagraphs,
+  youtubeThumbnail,
+  type Conversation,
+} from '../../lib/content';
+import { SITE_NAME, HOST_NAME, ARTWORK } from '../../lib/site';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const conversations = await getPublishedConversations();
+  return conversations.map((conversation) => ({
+    params: { slug: conversation.slug },
+    props: { conversation, all: conversations },
+  }));
+};
+
+interface Props {
+  conversation: Conversation;
+  all: Conversation[];
+}
+
+const { conversation: c, all } = Astro.props;
+const related = getRelated(c, all, 3);
+const thumbnail = youtubeThumbnail(c);
+const path = `/conversations/${c.slug}/`;
+// Episodes built from YouTube show the channel's own description, paragraph by paragraph.
+// Hand-written conversations keep their existing single paragraph exactly as before.
+const fromYouTube = c.origin === 'youtube';
+const youtubeParagraphs = fromYouTube ? descriptionParagraphs(c.description.full) : [];
+
+const title = c.seo.seoTitle ?? (c.guest.name && c.guest.name !== HOST_NAME
+  ? `${c.title} | ${SITE_NAME}`
+  : `${c.title} | ${SITE_NAME}`);
+const description =
+  c.seo.metaDescription ?? (cardDescription(c) || `${c.title} — a conversation from ${SITE_NAME}.`);
+
+// Structured data carries only fields the record actually supports.
+const episode: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'PodcastEpisode',
+  name: c.title,
+  datePublished: c.publicationDate,
+  description,
+  url: new URL(path, Astro.site).href,
+  partOfSeries: {
+    '@type': 'PodcastSeries',
+    name: SITE_NAME,
+    url: new URL('/', Astro.site).href,
+  },
+};
+if (c.episodeNumber !== null) episode.episodeNumber = c.episodeNumber;
+if (c.guest.name) {
+  episode.actor = { '@type': 'Person', name: c.guest.name };
+}
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  ogTitle={c.seo.ogTitle}
+  ogDescription={c.seo.ogDescription}
+  ogImage={c.seo.ogImage ?? c.image ?? ARTWORK.src}
+  ogType="article"
+  structuredData={[episode]}
+>
+  <article class="conversation">
+    <header class="conversation__header">
+      <div class="shell shell-narrow">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="/conversations/">Conversations</a>
+        </nav>
+        <p class="meta">
+          <time datetime={c.publicationDate}>{formatDate(c.publicationDate)}</time>
+          {c.episodeNumber !== null && <><span aria-hidden="true"> / </span>Episode {c.episodeNumber}</>}
+          {c.guest.name && <><span aria-hidden="true"> / </span>{c.guest.name}</>}
+        </p>
+        <h1>{c.title}</h1>
+      </div>
+    </header>
+
+    <div class="shell shell-narrow conversation__body">
+      <div class="conversation__media">
+        {
+          c.platforms.youtubeVideoId ? (
+            <YouTubeEmbed videoId={c.platforms.youtubeVideoId} title={c.title} />
+          ) : (
+            <div class:list={['conversation__fallback', thumbnail && 'conversation__fallback--thumb']}>
+              <ConversationImage
+                src={c.image}
+                thumbnail={thumbnail}
+                alt=""
+                fallback="artwork"
+                loading="eager"
+                sizes="(min-width: 56rem) 52rem, 100vw"
+              />
+            </div>
+          )
+        }
+      </div>
+
+      <PlatformActions
+        youtubeUrl={c.platforms.youtubeUrl}
+        applePodcastUrl={c.platforms.applePodcastUrl}
+        spotifyEpisodeUrl={c.platforms.spotifyEpisodeUrl}
+        explainFallbacks
+      />
+
+      {
+        !fromYouTube ? (
+          <section aria-labelledby="about-conversation">
+            <h2 id="about-conversation">About this conversation</h2>
+            <p>{c.description.full}</p>
+          </section>
+        ) : youtubeParagraphs.length > 0 && (
+          <section aria-labelledby="about-conversation" class="yt-description">
+            <h2 id="about-conversation">About this conversation</h2>
+            {youtubeParagraphs.map((lines) => (
+              <p>
+                {lines.map((parts, i) => (
+                  <>
+                    {i > 0 && <br />}
+                    {parts.map((part) =>
+                      part.href ? (
+                        <a href={part.href} target="_blank" rel="noopener noreferrer nofollow">{part.text}</a>
+                      ) : (
+                        part.text
+                      )
+                    )}
+                  </>
+                ))}
+              </p>
+            ))}
+          </section>
+        )
+      }
+
+      {
+        c.guest.name && c.guest.shortContext && (
+          <section aria-labelledby="about-guest">
+            <h2 id="about-guest">About {c.guest.name}</h2>
+            <p>{c.guest.shortContext}</p>
+          </section>
+        )
+      }
+
+      {
+        (c.topics.length > 0 || c.themes.length > 0) && (
+          <section aria-labelledby="taxonomy-heading">
+            <h2 id="taxonomy-heading" class="visually-hidden">Subjects and themes</h2>
+            <div class="taxonomy">
+            {c.topics.length > 0 && (
+              <div class="taxonomy__group">
+                <h3 class="taxonomy__label">Topics</h3>
+                <ul class="tag-list">
+                  {c.topics.map((topic) => <li><span class="tag">{topic}</span></li>)}
+                </ul>
+              </div>
+            )}
+            {c.themes.length > 0 && (
+              <div class="taxonomy__group">
+                <h3 class="taxonomy__label">Themes</h3>
+                <ul class="tag-list">
+                  {c.themes.map((theme) => (
+                    <li>
+                      <a class="tag tag-theme" href={`/conversations/?theme=${encodeURIComponent(theme)}`}>
+                        {theme}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            </div>
+          </section>
+        )
+      }
+
+      <Disclaimer text={c.disclaimer} />
+    </div>
+
+    {
+      related.length > 0 && (
+        <section class="section related" aria-labelledby="related-heading">
+          <div class="shell">
+            <p class="eyebrow">Keep going</p>
+            <h2 id="related-heading">Related conversations</h2>
+            <ul class="related__grid">
+              {related.map((r) => (
+                <li><ConversationCard conversation={r} /></li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )
+    }
+  </article>
+</BaseLayout>
+
+<style>
+  .conversation__header {
+    background: var(--surface-mist);
+    padding-block: var(--space-l);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .crumbs {
+    margin-bottom: var(--space-s);
+  }
+
+  .crumbs a {
+    font-size: var(--step--1);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+  }
+
+  .conversation__header h1 {
+    margin: var(--space-2xs) 0 0;
+    font-size: var(--step-3);
+  }
+
+  .conversation__body {
+    display: grid;
+    gap: var(--space-l);
+    padding-block: var(--space-l);
+  }
+
+  .conversation__body > section {
+    display: block;
+  }
+
+  /* No video on record: show the official artwork whole. It is never cropped. */
+  .conversation__fallback {
+    max-width: 26rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .conversation__fallback :global(img) {
+    object-fit: contain;
+    height: auto;
+  }
+
+  /* A thumbnail keeps its natural 16:9 frame; the artwork fallback is shown whole. */
+  .conversation__fallback--thumb {
+    max-width: none;
+    aspect-ratio: 16 / 9;
+  }
+
+
+  .conversation__fallback--thumb :global(img) {
+    object-fit: cover;
+    height: 100%;
+  }
+
+  /* Long links in YouTube descriptions must wrap on narrow screens. */
+  .yt-description a {
+    overflow-wrap: anywhere;
+  }
+
+  .taxonomy {
+    display: grid;
+    gap: var(--space-m);
+    border-top: 1px solid var(--rule);
+    padding-top: var(--space-m);
+  }
+
+  .taxonomy__label {
+    font-family: var(--font-body);
+    font-size: var(--step--1);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-quiet);
+    margin: 0 0 var(--space-xs);
+  }
+
+  .related {
+    background: var(--surface-mist);
+    border-top: 1px solid var(--rule);
+  }
+
+  .related__grid {
+    list-style: none;
+    margin: var(--space-m) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  .related__grid li {
+    max-width: none;
+  }
+
+  @media (min-width: 48rem) {
+    .taxonomy {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .related__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

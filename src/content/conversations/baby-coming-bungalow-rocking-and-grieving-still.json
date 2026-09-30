@@ -1,0 +1,60 @@
+{
+  "id": "baby-coming-bungalow-rocking-and-grieving-still",
+  "slug": "baby-coming-bungalow-rocking-and-grieving-still",
+  "episodeNumber": null,
+  "title": "\"Baby Coming, Bungalow Rocking, & Grieving Still\"",
+  "publicationDate": "2024-07-11",
+  "guest": {
+    "id": "aaron-lahman",
+    "name": "Aaron Lahman",
+    "shortContext": null,
+    "image": null
+  },
+  "description": {
+    "source": "",
+    "short": "Aaron on grief that stays, and on purpose, meaning, and resilience while life keeps moving.",
+    "full": "Aaron speaks about grieving still while a baby is coming and the bungalow is rocking — about stories and meaning, about purpose and resilience, and about healing that does not arrive on schedule."
+  },
+  "platforms": {
+    "youtubeUrl": null,
+    "youtubeVideoId": null,
+    "youtubeThumbnail": null,
+    "applePodcastUrl": null,
+    "spotifyEpisodeUrl": null
+  },
+  "topics": [
+    "Grief",
+    "Purpose",
+    "Stories",
+    "Resilience",
+    "Meaning",
+    "Healing"
+  ],
+  "themes": [
+    "Grief",
+    "Purpose",
+    "Resilience",
+    "Healing"
+  ],
+  "image": null,
+  "featured": false,
+  "relatedConversationIds": [],
+  "source": {
+    "sourcePlatform": "Apple Podcasts",
+    "sourceUrl": null,
+    "sourceType": "owner-supplied show presentation",
+    "sourceDate": null,
+    "sourceNotes": "Episode surfaced in the approved seed catalog (02_Content_Source.md). No verified episode-level YouTube or Apple URL is on record yet."
+  },
+  "contentStatus": "developed",
+  "publishingStatus": "published",
+  "disclaimer": "Our Healing Voices shares personal stories and lived experience. These conversations are intended to inform and entertain. They are not medical advice, diagnosis, or treatment, and they are not a substitute for care from a qualified professional.",
+  "seo": {
+    "seoTitle": null,
+    "metaDescription": "Aaron on grief that stays, and on purpose, meaning, and resilience while life keeps moving.",
+    "canonicalUrl": null,
+    "ogTitle": null,
+    "ogDescription": "Aaron on grief that stays, and on purpose, meaning, and resilience while life keeps moving.",
+    "ogImage": null
+  }
+}

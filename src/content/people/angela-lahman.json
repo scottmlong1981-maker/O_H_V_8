@@ -1,0 +1,29 @@
+{
+  "id": "angela-lahman",
+  "slug": "angela-lahman",
+  "name": "Angela Lahman",
+  "role": "guest",
+  "image": null,
+  "imageAlt": null,
+  "imageFocus": null,
+  "links": {
+    "websiteUrl": "https://angelalahman.com/",
+    "instagramUrl": "https://www.instagram.com/angelalahman/",
+    "facebookUrl": "https://www.facebook.com/angela.lahman",
+    "publicEmail": "angela@angelalahman.com",
+    "publicPhone": null
+  },
+  "shortContext": null,
+  "conversationIds": [
+    "created-for-greatness"
+  ],
+  "themes": [
+    "Relationships",
+    "Transformation"
+  ],
+  "source": {
+    "sourcePlatform": "Apple Podcasts",
+    "sourceUrl": null
+  },
+  "contentStatus": "observed"
+}

@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ConversationExplorer from '../../components/ConversationExplorer.astro';
+import { getPublishedConversations, getThemesWithCounts, getPeopleDirectory } from '../../lib/content';
+import { SITE_NAME } from '../../lib/site';
+
+const conversations = await getPublishedConversations();
+const themes = await getThemesWithCounts();
+const people = await getPeopleDirectory();
+const guests = people.map((p) => ({ id: p.id, name: p.name }));
+
+const description = `Every published conversation from ${SITE_NAME} — search by person, subject, or theme, and sort by newest or oldest.`;
+---
+
+<BaseLayout
+  title={`Conversations | ${SITE_NAME}`}
+  description={description}
+  path="/conversations/"
+>
+  <section class="intro">
+    <div class="shell">
+      <p class="eyebrow">Conversations</p>
+      <h1>Every conversation, in one place</h1>
+      <p class="lede">
+        Search for a person, a subject, or a feeling. Filter by theme. The order is yours.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      <ConversationExplorer conversations={conversations} themes={themes} guests={guests} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .intro {
+    background: var(--surface-mist);
+    padding-block: var(--space-l);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .intro h1 {
+    margin-bottom: var(--space-xs);
+  }
+
+  .section {
+    padding-top: var(--space-l);
+  }
+</style>

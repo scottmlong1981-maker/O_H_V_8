@@ -1,0 +1,29 @@
+{
+  "id": "ambrosia-brown",
+  "slug": "ambrosia-brown",
+  "name": "Ambrosia Brown",
+  "role": "guest",
+  "image": null,
+  "imageAlt": null,
+  "imageFocus": null,
+  "links": {
+    "websiteUrl": "https://www.ambrosiabrownmassage.com/",
+    "instagramUrl": null,
+    "facebookUrl": "https://www.facebook.com/Ambrosia-Brown-Massage-119290791449097/",
+    "publicEmail": "ambrosiabrown@gmail.com",
+    "publicPhone": "435-260-1122"
+  },
+  "shortContext": null,
+  "conversationIds": [
+    "making-space-for-light-joy-and-laughter"
+  ],
+  "themes": [
+    "Grief",
+    "Spirituality"
+  ],
+  "source": {
+    "sourcePlatform": "Apple Podcasts",
+    "sourceUrl": null
+  },
+  "contentStatus": "observed"
+}

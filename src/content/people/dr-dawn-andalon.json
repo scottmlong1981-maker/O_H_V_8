@@ -1,0 +1,29 @@
+{
+  "id": "dr-dawn-andalon",
+  "slug": "dr-dawn-andalon",
+  "name": "Dr. Dawn Andalon",
+  "role": "guest",
+  "image": null,
+  "imageAlt": null,
+  "imageFocus": null,
+  "links": {
+    "websiteUrl": "https://www.reviveptandpilates.com/",
+    "instagramUrl": null,
+    "facebookUrl": null,
+    "publicEmail": null,
+    "publicPhone": null
+  },
+  "shortContext": null,
+  "conversationIds": [
+    "womens-health-physical-therapy"
+  ],
+  "themes": [
+    "Body",
+    "Grief"
+  ],
+  "source": {
+    "sourcePlatform": "Apple Podcasts",
+    "sourceUrl": null
+  },
+  "contentStatus": "observed"
+}

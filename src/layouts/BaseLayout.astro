@@ -1,0 +1,99 @@
+---
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { SITE_NAME, ARTWORK, GA_ID } from '../lib/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path only, e.g. "/conversations/". Canonical is resolved against `site`. */
+  path: string;
+  ogTitle?: string | null;
+  ogDescription?: string | null;
+  ogImage?: string | null;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+  /** JSON-LD objects. Never invent fields to fill a schema. */
+  structuredData?: Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  path,
+  ogTitle,
+  ogDescription,
+  ogImage,
+  ogType = 'website',
+  noindex = false,
+  structuredData = [],
+} = Astro.props;
+
+const canonical = new URL(path, Astro.site ?? Astro.url.origin).href;
+const image = new URL(ogImage ?? ARTWORK.src, Astro.site ?? Astro.url.origin).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={ogTitle ?? title} />
+    <meta property="og:description" content={ogDescription ?? description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/brand/our-healing-voices-artwork.png" type="image/png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@200;300;400&family=Inter:wght@400;600&display=swap"
+    />
+
+    {
+      structuredData.map((data) => (
+        <script type="application/ld+json" is:inline set:html={JSON.stringify(data)} />
+      ))
+    }
+
+    {
+      GA_ID && (
+        <>
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
+          <script is:inline define:vars={{ GA_ID }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { window.dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', GA_ID);
+          </script>
+        </>
+      )
+    }
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <SiteHeader />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style is:global>
+  main:focus {
+    outline: none;
+  }
+</style>

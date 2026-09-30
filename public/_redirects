@@ -1,0 +1,6 @@
+# Netlify redirects.
+#
+# The old /people → /guests/ forward is no longer set here. The Guests page is switched
+# off (see src/lib/features.mjs), so forwarding /people to it would only land on a 404.
+# When Guests is switched back on, the site generates the /people → /guests/ forward
+# itself from astro.config.mjs — nothing needs adding to this file.

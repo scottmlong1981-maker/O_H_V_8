@@ -1,0 +1,78 @@
+---
+/**
+ * A centered play mark over a video thumbnail — shown only when a real YouTube video is
+ * linked, so the image reads as something to watch. Purely visual: the surrounding link
+ * carries the meaning, so this is hidden from assistive technology.
+ *
+ * The parent must be `position: relative` (the card and Latest Conversation frames are).
+ * The mark scales with the frame and stays small enough not to cover a face or title.
+ */
+interface Props {
+  size?: 'default' | 'large';
+}
+const { size = 'default' } = Astro.props;
+---
+
+<span class:list={['play', size === 'large' && 'play--large']} aria-hidden="true">
+  <svg viewBox="0 0 68 48" focusable="false">
+    <path
+      class="play__shape"
+      d="M66.5 7.7a8.6 8.6 0 0 0-6-6C55.2.3 34 .3 34 .3s-21.2 0-26.5 1.4a8.6 8.6 0 0 0-6 6C.1 13 .1 24 .1 24s0 11 1.4 16.3a8.6 8.6 0 0 0 6 6C12.8 47.7 34 47.7 34 47.7s21.2 0 26.5-1.4a8.6 8.6 0 0 0 6-6C67.9 35 67.9 24 67.9 24s0-11-1.4-16.3z"
+    ></path>
+    <path class="play__arrow" d="M27 14.5v19L44 24z"></path>
+  </svg>
+</span>
+
+<style>
+  .play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+  }
+
+  .play svg {
+    width: clamp(2.75rem, 17%, 4rem);
+    height: auto;
+    filter: drop-shadow(0 1px 3px rgb(0 0 0 / 0.35));
+    transition: transform 160ms ease;
+  }
+
+  .play--large svg {
+    width: clamp(3.5rem, 19%, 5rem);
+  }
+
+  /* Brand deep green, not YouTube red: the mark belongs to Our Healing Voices. */
+  .play__shape {
+    fill: var(--ohv-shadow);
+    fill-opacity: 0.86;
+    transition: fill-opacity 160ms ease;
+  }
+
+  .play__arrow {
+    fill: var(--ohv-soft-white);
+  }
+
+  :global(a:hover) > .play .play__shape,
+  :global(a:focus-visible) > .play .play__shape {
+    fill-opacity: 1;
+  }
+
+  :global(a:hover) > .play svg,
+  :global(a:focus-visible) > .play svg {
+    transform: scale(1.08);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .play svg,
+    .play__shape {
+      transition: none;
+    }
+
+    :global(a:hover) > .play svg,
+    :global(a:focus-visible) > .play svg {
+      transform: none;
+    }
+  }
+</style>

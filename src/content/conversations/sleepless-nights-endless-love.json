@@ -1,0 +1,60 @@
+{
+  "id": "sleepless-nights-endless-love",
+  "slug": "sleepless-nights-endless-love",
+  "episodeNumber": null,
+  "title": "\"Sleepless Nights, Endless Love\"",
+  "publicationDate": "2025-08-11",
+  "guest": {
+    "id": "aaron-lahman",
+    "name": "Aaron Lahman",
+    "shortContext": null,
+    "image": null
+  },
+  "description": {
+    "source": "",
+    "short": "Aaron speaks in his own voice about new fatherhood, love, trauma, and his own healing.",
+    "full": "Aaron speaks in his own voice about the sleeplessness and love of new fatherhood, about resilience and trauma, and about staying curious inside his own healing."
+  },
+  "platforms": {
+    "youtubeUrl": null,
+    "youtubeVideoId": null,
+    "youtubeThumbnail": null,
+    "applePodcastUrl": null,
+    "spotifyEpisodeUrl": null
+  },
+  "topics": [
+    "New fatherhood",
+    "Resilience",
+    "Trauma",
+    "Love",
+    "Curiosity",
+    "Personal healing"
+  ],
+  "themes": [
+    "Parenthood",
+    "Love",
+    "Resilience",
+    "Healing"
+  ],
+  "image": null,
+  "featured": false,
+  "relatedConversationIds": [],
+  "source": {
+    "sourcePlatform": "Apple Podcasts",
+    "sourceUrl": null,
+    "sourceType": "owner-supplied show presentation",
+    "sourceDate": null,
+    "sourceNotes": "Episode surfaced in the approved seed catalog (02_Content_Source.md). No verified episode-level YouTube or Apple URL is on record yet."
+  },
+  "contentStatus": "developed",
+  "publishingStatus": "published",
+  "disclaimer": "Our Healing Voices shares personal stories and lived experience. These conversations are intended to inform and entertain. They are not medical advice, diagnosis, or treatment, and they are not a substitute for care from a qualified professional.",
+  "seo": {
+    "seoTitle": null,
+    "metaDescription": "Aaron speaks in his own voice about new fatherhood, love, trauma, and his own healing.",
+    "canonicalUrl": null,
+    "ogTitle": null,
+    "ogDescription": "Aaron speaks in his own voice about new fatherhood, love, trauma, and his own healing.",
+    "ogImage": null
+  }
+}

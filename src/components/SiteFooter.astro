@@ -1,0 +1,174 @@
+---
+import PlatformIcon from './PlatformIcon.astro';
+import {
+  NAV,
+  NAV_ACTION,
+  LISTEN_LINKS,
+  CONNECT_LINKS,
+  DISCLAIMER,
+  SITE_NAME,
+} from '../lib/site';
+
+const year = new Date().getFullYear();
+// The same pages as the header, in the same order — hidden pages never appear here.
+const siteLinks = [...NAV, NAV_ACTION];
+---
+
+<footer class="footer">
+  <div class="shell footer__inner">
+    <div class="footer__identity">
+      <span class="wordmark footer__wordmark">
+        <span class="wordmark__our">Our Healing</span>
+        <span class="wordmark__voices">Voices</span>
+      </span>
+    </div>
+
+    <div class="footer__columns">
+      <nav class="footer__group" aria-label="Site">
+        <ul class="footer__list">
+          {siteLinks.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+        </ul>
+      </nav>
+
+      <nav class="footer__group" aria-label="Listen">
+        <ul class="footer__list">
+          {
+            LISTEN_LINKS.map((item) => (
+              <li>
+                <a
+                  class="footer__platform"
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-analytics={item.analytics}
+                >
+                  <PlatformIcon name={item.icon} />
+                  <span>{item.label}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <nav class="footer__group" aria-label="Connect">
+        <ul class="footer__list">
+          {
+            CONNECT_LINKS.map((item) => (
+              <li>
+                <a
+                  class="footer__platform"
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-analytics={item.analytics}
+                >
+                  <PlatformIcon name={item.icon} />
+                  <span>{item.short}</span>
+                  <span class="visually-hidden"> — {item.label} (opens in a new tab)</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <p class="footer__disclaimer">{DISCLAIMER}</p>
+    <p class="footer__copyright">© {year} {SITE_NAME}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--surface-deepest);
+    color: var(--ink-inverse);
+    padding-block: var(--space-l);
+    margin-top: var(--space-xl);
+  }
+
+  .footer__inner {
+    display: grid;
+    gap: var(--space-m);
+  }
+
+  .footer__wordmark {
+    font-size: 1.1rem;
+  }
+
+  .footer__columns {
+    display: grid;
+    gap: var(--space-m);
+    border-top: 1px solid var(--rule-inverse);
+    padding-top: var(--space-m);
+  }
+
+  .footer__group {
+    min-width: 0;
+  }
+
+  .footer__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.1rem;
+  }
+
+  .footer__list li {
+    max-width: none;
+  }
+
+  .footer__list a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 44px;
+    color: var(--ink-inverse);
+    font-size: var(--step--1);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    padding-block: 0.35rem;
+  }
+
+  .footer__list a:hover,
+  .footer__list a:focus-visible {
+    color: var(--ink-inverse);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  /* Platform marks stay quiet: they inherit the brand ink rather than platform colour. */
+  .footer__platform :global(.platform-icon) {
+    color: var(--ink-inverse-soft);
+    transition: color 120ms linear;
+  }
+
+  .footer__platform:hover :global(.platform-icon),
+  .footer__platform:focus-visible :global(.platform-icon) {
+    color: var(--ink-inverse);
+  }
+
+  .footer__disclaimer {
+    color: var(--ink-inverse-soft);
+    font-size: var(--step--1);
+    line-height: 1.6;
+    max-width: 60ch;
+    border-top: 1px solid var(--rule-inverse);
+    padding-top: var(--space-m);
+    margin: 0;
+  }
+
+  .footer__copyright {
+    color: var(--ink-inverse-soft);
+    font-size: var(--step--1);
+    margin: 0;
+  }
+
+  @media (min-width: 40rem) {
+    .footer__columns {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-l);
+    }
+  }
+</style>

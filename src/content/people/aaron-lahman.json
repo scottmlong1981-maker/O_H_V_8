@@ -1,0 +1,34 @@
+{
+  "id": "aaron-lahman",
+  "slug": "aaron-lahman",
+  "name": "Aaron Lahman",
+  "role": "host",
+  "image": "/images/aaron-lahman-portrait.jpg",
+  "imageAlt": "Aaron Lahman outdoors in a cap and sunglasses, smiling in front of a sunlit green hedge.",
+  "imageFocus": null,
+  "links": {
+    "websiteUrl": null,
+    "instagramUrl": "https://www.instagram.com/aaron.lahman/",
+    "facebookUrl": null,
+    "publicEmail": null,
+    "publicPhone": null
+  },
+  "shortContext": null,
+  "conversationIds": [
+    "sleepless-nights-endless-love",
+    "baby-coming-bungalow-rocking-and-grieving-still"
+  ],
+  "themes": [
+    "Parenthood",
+    "Love",
+    "Resilience",
+    "Healing",
+    "Grief",
+    "Purpose"
+  ],
+  "source": {
+    "sourcePlatform": "Apple Podcasts",
+    "sourceUrl": null
+  },
+  "contentStatus": "observed"
+}

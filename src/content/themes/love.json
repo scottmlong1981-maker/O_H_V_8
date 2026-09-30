@@ -1,0 +1,10 @@
+{
+  "id": "love",
+  "slug": "love",
+  "name": "Love",
+  "description": "Conversations where love is the reason the story is being told.",
+  "conversationIds": [
+    "sleepless-nights-endless-love"
+  ],
+  "contentStatus": "developed"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "connection",
+  "slug": "connection",
+  "name": "Connection",
+  "description": "Conversations about what people find in one another.",
+  "conversationIds": [
+    "breathing-into-wholeness"
+  ],
+  "contentStatus": "developed"
+}

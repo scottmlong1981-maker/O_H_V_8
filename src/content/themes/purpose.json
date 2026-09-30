@@ -1,0 +1,10 @@
+{
+  "id": "purpose",
+  "slug": "purpose",
+  "name": "Purpose",
+  "description": "Conversations about meaning and the reasons people keep going.",
+  "conversationIds": [
+    "baby-coming-bungalow-rocking-and-grieving-still"
+  ],
+  "contentStatus": "developed"
+}

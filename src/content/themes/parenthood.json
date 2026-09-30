@@ -1,0 +1,10 @@
+{
+  "id": "parenthood",
+  "slug": "parenthood",
+  "name": "Parenthood",
+  "description": "Conversations about becoming a parent and what it changes.",
+  "conversationIds": [
+    "sleepless-nights-endless-love"
+  ],
+  "contentStatus": "developed"
+}

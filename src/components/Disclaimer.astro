@@ -1,0 +1,39 @@
+---
+import { DISCLAIMER } from '../lib/site';
+
+interface Props {
+  text?: string | null;
+}
+
+const { text } = Astro.props;
+---
+
+<aside class="disclaimer" aria-label="Listener note">
+  <p class="disclaimer__label">A note for listeners</p>
+  <p class="disclaimer__text">{text ?? DISCLAIMER}</p>
+</aside>
+
+<style>
+  .disclaimer {
+    border-left: 3px solid var(--accent);
+    background: var(--surface-mist);
+    padding: var(--space-m);
+    border-radius: var(--radius);
+  }
+
+  .disclaimer__label {
+    font-size: var(--step--1);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--accent-deep);
+    margin: 0 0 var(--space-2xs);
+  }
+
+  .disclaimer__text {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: var(--step--1);
+    line-height: 1.65;
+  }
+</style>

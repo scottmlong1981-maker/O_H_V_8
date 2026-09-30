@@ -1,0 +1,57 @@
+{
+  "id": "breathing-into-wholeness",
+  "slug": "breathing-into-wholeness",
+  "episodeNumber": 52,
+  "title": "\"Breathing Into Wholeness\" with Lance Huffman",
+  "publicationDate": "2025-12-27",
+  "guest": {
+    "id": "lance-huffman",
+    "name": "Lance Huffman",
+    "shortContext": null,
+    "image": null
+  },
+  "description": {
+    "source": "",
+    "short": "A conversation with Lance Huffman about hope, inspiration, and the individual paths people walk.",
+    "full": "Aaron sits with Lance Huffman for a deep conversation about hope and inspiration, the individual paths people walk in their own healing, and what men find in community with one another."
+  },
+  "platforms": {
+    "youtubeUrl": null,
+    "youtubeVideoId": null,
+    "youtubeThumbnail": null,
+    "applePodcastUrl": null,
+    "spotifyEpisodeUrl": null
+  },
+  "topics": [
+    "Deep conversation",
+    "Inspiration",
+    "Hope",
+    "Individual paths",
+    "Men's community"
+  ],
+  "themes": [
+    "Healing",
+    "Connection"
+  ],
+  "image": null,
+  "featured": true,
+  "relatedConversationIds": [],
+  "source": {
+    "sourcePlatform": "Apple Podcasts",
+    "sourceUrl": null,
+    "sourceType": "owner-supplied show presentation",
+    "sourceDate": null,
+    "sourceNotes": "Episode surfaced in the approved seed catalog (02_Content_Source.md). No verified episode-level YouTube or Apple URL is on record yet."
+  },
+  "contentStatus": "developed",
+  "publishingStatus": "published",
+  "disclaimer": "Our Healing Voices shares personal stories and lived experience. These conversations are intended to inform and entertain. They are not medical advice, diagnosis, or treatment, and they are not a substitute for care from a qualified professional.",
+  "seo": {
+    "seoTitle": null,
+    "metaDescription": "A conversation with Lance Huffman about hope, inspiration, and the individual paths people walk.",
+    "canonicalUrl": null,
+    "ogTitle": null,
+    "ogDescription": "A conversation with Lance Huffman about hope, inspiration, and the individual paths people walk.",
+    "ogImage": null
+  }
+}

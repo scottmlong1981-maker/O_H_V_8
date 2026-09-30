@@ -1,0 +1,29 @@
+{
+  "id": "carolyn-contreras",
+  "slug": "carolyn-contreras",
+  "name": "Carolyn Contreras",
+  "role": "guest",
+  "image": null,
+  "imageAlt": null,
+  "imageFocus": null,
+  "links": {
+    "websiteUrl": null,
+    "instagramUrl": null,
+    "facebookUrl": "https://www.facebook.com/carolyn.contreras.12",
+    "publicEmail": null,
+    "publicPhone": null
+  },
+  "shortContext": null,
+  "conversationIds": [
+    "the-shore-inside-coming-home-to-your-body"
+  ],
+  "themes": [
+    "Body",
+    "Healing"
+  ],
+  "source": {
+    "sourcePlatform": "Apple Podcasts",
+    "sourceUrl": null
+  },
+  "contentStatus": "observed"
+}
